@@ -16,13 +16,13 @@ const Footer = () => {
                             Elevating the essence of identity through artisanal fragrances. Experience the peak of olfactory luxury.
                         </p>
                         <div className="flex space-x-6">
-                            <a href="https://github.com/mitulaghara" className="text-gray-500 hover:text-white transition-all duration-300">
+                            <a href="https://github.com/" className="text-gray-500 hover:text-white transition-all duration-300">
                                 <Github className="w-5 h-5" />
                             </a>
-                            <a href="https://www.instagram.com/mitul_aghara/" className="text-gray-500 hover:text-white transition-all duration-300">
+                            <a href="https://www.instagram.com/" className="text-gray-500 hover:text-white transition-all duration-300">
                                 <Instagram className="w-5 h-5" />
                             </a>
-                            <a href="https://www.linkedin.com/in/mitul-aghara-602a72332/" className="text-gray-500 hover:text-white transition-all duration-300">
+                            <a href="https://www.linkedin.com/" className="text-gray-500 hover:text-white transition-all duration-300">
                                 <Linkedin className="w-5 h-5" />
                             </a>
                         </div>
