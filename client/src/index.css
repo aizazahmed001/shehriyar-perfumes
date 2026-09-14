@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-black font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .text-luxury {
+    @apply font-serif tracking-widest uppercase;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-slideInUp {
+  animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slideInDown {
+  animation: slideInDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.glass-nav {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.product-card {
+  @apply transition-all duration-500 border border-gray-100;
+}
+
+.product-card:hover {
+  @apply border-black shadow-2xl;
+  transform: translateY(-4px);
+}
+
+.monochrome-btn {
+  @apply px-8 py-3 bg-black text-white hover:bg-white hover:text-black border border-black transition-all duration-300 font-bold uppercase tracking-wider text-sm;
+}
+
+.monochrome-btn-outline {
+  @apply px-8 py-3 bg-white text-black hover:bg-black hover:text-white border border-black transition-all duration-300 font-bold uppercase tracking-wider text-sm;
+}
+
+.luxury-title {
+  @apply text-5xl md:text-7xl font-serif font-light tracking-tight;
+}
