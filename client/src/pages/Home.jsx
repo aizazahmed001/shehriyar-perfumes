@@ -9,6 +9,7 @@ import {
 import socket from '../lib/socket';
 import ProductSkeleton from '../components/ProductSkeleton';
 import { getLocalProductImage, getProductImage } from '../lib/productMedia';
+import { demoProducts } from '../data/demoProducts';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -31,17 +32,16 @@ const Home = () => {
             setLoading(true);
             const res = await axios.get('http://localhost:5001/api/products');
             if (res.data && res.data.length === 0) {
-                // If no products, try to seed or handle empty state
-                await axios.get('http://localhost:5001/api/seed');
-                const retry = await axios.get('http://localhost:5001/api/products');
-                setProducts(retry.data);
-                setFeaturedProducts(retry.data.length > 4 ? retry.data.slice(0, 4) : retry.data);
+                setProducts(demoProducts);
+                setFeaturedProducts(demoProducts.slice(0, 4));
             } else {
                 setProducts(res.data);
                 setFeaturedProducts(res.data.length > 4 ? res.data.slice(0, 4) : res.data);
             }
         } catch (err) {
             console.error(err);
+            setProducts(demoProducts);
+            setFeaturedProducts(demoProducts.slice(0, 4));
         } finally {
             setLoading(false);
         }

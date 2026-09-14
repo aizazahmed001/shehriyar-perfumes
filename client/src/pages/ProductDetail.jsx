@@ -6,6 +6,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { Heart, ShoppingBag, Truck, Shield, ArrowLeft, Star, Share2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getLocalProductImage, getProductImage } from '../lib/productMedia';
+import { getDemoProduct } from '../data/demoProducts';
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -30,6 +31,11 @@ const ProductDetail = () => {
                 }
             } catch (err) {
                 console.error("Failed to fetch product", err);
+                const demoProduct = getDemoProduct(id);
+                setProduct(demoProduct || null);
+                if (demoProduct) {
+                    setSelectedImage(demoProduct.images?.[0] || demoProduct.image);
+                }
             } finally {
                 setLoading(false);
             }

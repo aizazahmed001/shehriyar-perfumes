@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import AuthModal from './AuthModal';
 import UserAvatar from './UserAvatar';
 import axios from 'axios';
+import { demoProducts } from '../data/demoProducts';
 
 const Navbar = () => {
     const { cart } = useCart();
@@ -31,10 +32,11 @@ const Navbar = () => {
         try {
             const res = await axios.get('http://localhost:5001/api/products');
             if (Array.isArray(res.data)) {
-                setAllProducts(res.data);
+                setAllProducts(res.data.length > 0 ? res.data : demoProducts);
             }
         } catch (err) {
             console.error("Failed to fetch products for search", err);
+            setAllProducts(demoProducts);
         }
     };
 

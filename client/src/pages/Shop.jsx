@@ -6,6 +6,7 @@ import { Plus, Filter, SlidersHorizontal, Heart, Star } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
 import ProductSkeleton from '../components/ProductSkeleton';
 import { getLocalProductImage, getProductImage } from '../lib/productMedia';
+import { demoProducts } from '../data/demoProducts';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -36,10 +37,13 @@ const Shop = () => {
         try {
             setLoading(true);
             const res = await axios.get('http://localhost:5001/api/products');
-            setProducts(res.data);
-            setFilteredProducts(res.data);
+            const productsData = res.data.length > 0 ? res.data : demoProducts;
+            setProducts(productsData);
+            setFilteredProducts(productsData);
         } catch (err) {
             console.error(err);
+            setProducts(demoProducts);
+            setFilteredProducts(demoProducts);
         } finally {
             setLoading(false);
         }
