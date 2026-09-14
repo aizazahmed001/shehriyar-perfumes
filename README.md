@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🖤 SHEHRIYAR PERFUME
+# 🖤 SHEHRIYAR PERFUMES
 
   <p>
     <strong>A high-end, minimalist monochrome e-commerce platform for premium perfumes.</strong>
