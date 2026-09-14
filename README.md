@@ -82,8 +82,8 @@ Before you begin, ensure you have the following installed:
 ### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/mitulaghara/perfume-store-using-mernstack.git
-cd perfume-store-using-mernstack
+git clone https://github.com/aizazahmed001/shehriyar-perfumes.git
+cd shehriyar-perfumes
 ```
 
 ### 3. Configure MongoDB
