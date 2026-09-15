@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
@@ -18,6 +18,18 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const { addToCart } = useCart();
     const { formatPrice } = useCurrency();
+    const heroVideoRef = useRef(null);
+
+    useEffect(() => {
+        const video = heroVideoRef.current;
+        if (!video) return;
+
+        video.muted = true;
+        video.defaultMuted = true;
+        video.play().catch(() => {
+            // Some browsers wait until the video can play before allowing autoplay.
+        });
+    }, []);
 
     useEffect(() => {
         fetchProducts();
@@ -61,12 +73,17 @@ const Home = () => {
             {/* Hero Section */}
             <section className="relative overflow-hidden pt-32 pb-20 lg:pt-48 lg:pb-32 border-b border-black/5">
                 <video
+                    ref={heroVideoRef}
                     className="absolute inset-0 w-full h-full object-cover"
                     src="/assets/homepage.mp4"
                     autoPlay
                     muted
                     loop
                     playsInline
+                    preload="auto"
+                    onCanPlay={(event) => {
+                        event.currentTarget.play().catch(() => {});
+                    }}
                     aria-hidden="true"
                 />
                 <div className="absolute inset-0 bg-white/40"></div>
