@@ -7,6 +7,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import ProductSkeleton from '../components/ProductSkeleton';
 import { getLocalProductImage, getProductImage } from '../lib/productMedia';
 import { demoProducts } from '../data/demoProducts';
+import { useCurrency } from '../context/CurrencyContext';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -16,6 +17,7 @@ const Shop = () => {
     const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'All');
     const [sortBy, setSortBy] = useState('default');
     const { addToCart } = useCart();
+    const { formatPrice } = useCurrency();
     const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
     useEffect(() => {
@@ -170,11 +172,11 @@ const Shop = () => {
                                             <div className="flex flex-col">
                                                 {product.regularPrice && product.sellPrice && product.regularPrice > product.sellPrice ? (
                                                     <>
-                                                        <span className="text-[10px] text-black/20 line-through">₹{product.regularPrice}</span>
-                                                        <span className="text-lg font-bold tracking-tight">₹{product.sellPrice}</span>
+                                                        <span className="text-[10px] text-black/20 line-through">{formatPrice(product.regularPrice)}</span>
+                                                        <span className="text-lg font-bold tracking-tight">{formatPrice(product.sellPrice)}</span>
                                                     </>
                                                 ) : (
-                                                    <span className="text-lg font-bold tracking-tight">₹{product.sellPrice || product.price}</span>
+                                                    <span className="text-lg font-bold tracking-tight">{formatPrice(product.sellPrice || product.price)}</span>
                                                 )}
                                             </div>
                                             <button

@@ -19,6 +19,7 @@ import TermsConditions from './pages/TermsConditions';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { WishlistProvider } from './context/WishlistContext'; // Import WishlistProvider
+import { CurrencyProvider } from './context/CurrencyContext';
 
 import AuthPage from './pages/AuthPage';
 import ProductDetail from './pages/ProductDetail';
@@ -105,11 +106,13 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <WishlistProvider>
-        <CartProvider>
-          <AppContent />
-        </CartProvider>
-      </WishlistProvider>
+      <CurrencyProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <AppContent />
+          </CartProvider>
+        </WishlistProvider>
+      </CurrencyProvider>
     </AuthProvider>
   );
 }

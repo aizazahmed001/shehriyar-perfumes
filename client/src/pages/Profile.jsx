@@ -4,10 +4,12 @@ import { useWishlist } from '../context/WishlistContext';
 import { User, Mail, Phone, MapPin, Edit2, Save, X, Heart, ShoppingBag, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import UserAvatar from '../components/UserAvatar';
+import { useCurrency } from '../context/CurrencyContext';
 
 const Profile = () => {
     const { user, updateProfile } = useAuth();
     const { wishlist } = useWishlist();
+    const { formatPrice } = useCurrency();
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         name: user?.name || '',
@@ -206,7 +208,7 @@ const Profile = () => {
                                                     {item.name}
                                                 </h4>
                                                 <p className="text-[8px] text-black/40 font-black uppercase tracking-widest mt-1">{item.category}</p>
-                                                <p className="text-sm font-bold tracking-tighter mt-4 text-black">₹{item.price}</p>
+                                                <p className="text-sm font-bold tracking-tighter mt-4 text-black">{formatPrice(item.price)}</p>
                                             </div>
                                         </Link>
                                     ))}

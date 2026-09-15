@@ -3,10 +3,12 @@ import axios from 'axios';
 import { TrendingUp, Users, DollarSign, ShoppingBag } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { io } from 'socket.io-client';
+import { useCurrency } from '../../context/CurrencyContext';
 
 const socket = io('http://localhost:5001');
 
 const AdminDashboard = () => {
+    const { formatPrice } = useCurrency();
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalSales: 0,
@@ -86,7 +88,7 @@ const AdminDashboard = () => {
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 {[
-                    { label: 'Total Revenue', value: `₹${stats.totalSales.toLocaleString()}`, icon: DollarSign },
+                    { label: 'Total Revenue', value: formatPrice(stats.totalSales), icon: DollarSign },
                     { label: 'Total Orders', value: stats.totalOrders, icon: ShoppingBag },
                     { label: 'Total Products', value: stats.totalProducts, icon: TrendingUp },
                     { label: 'Active Users', value: '126', icon: Users }
@@ -161,7 +163,7 @@ const AdminDashboard = () => {
                                                 <div className="text-[10px] font-black uppercase tracking-wider truncate max-w-[150px]">{product.name}</div>
                                             </div>
                                         </td>
-                                        <td className="px-4 py-6 text-[10px] font-black tracking-widest text-right">₹{product.price}</td>
+                                        <td className="px-4 py-6 text-[10px] font-black tracking-widest text-right">{formatPrice(product.price)}</td>
                                         <td className="px-4 py-6 text-right">
                                             <span className={`text-[8px] font-black uppercase tracking-[0.2em] border px-2 py-1 ${product.stock > 0 ? 'border-black text-black' : 'border-red-600 text-red-600'}`}>
                                                 {product.stock > 0 ? `Stock: ${product.stock}` : 'Depleted'}

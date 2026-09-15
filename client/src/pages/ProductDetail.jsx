@@ -7,6 +7,7 @@ import { Heart, ShoppingBag, Truck, Shield, ArrowLeft, Star, Share2 } from 'luci
 import toast from 'react-hot-toast';
 import { getLocalProductImage, getProductImage } from '../lib/productMedia';
 import { getDemoProduct } from '../data/demoProducts';
+import { useCurrency } from '../context/CurrencyContext';
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -14,6 +15,7 @@ const ProductDetail = () => {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('description');
     const { addToCart } = useCart();
+    const { formatPrice } = useCurrency();
     const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
     const navigate = useNavigate();
 
@@ -135,9 +137,9 @@ const ProductDetail = () => {
                         </h1>
 
                         <div className="flex items-baseline gap-4 mb-10 md:mb-12">
-                            <span className="text-2xl md:text-3xl font-bold tracking-tight">₹{product.sellPrice || product.price}</span>
+                            <span className="text-2xl md:text-3xl font-bold tracking-tight">{formatPrice(product.sellPrice || product.price)}</span>
                             {product.regularPrice && product.sellPrice && product.regularPrice > product.sellPrice && (
-                                <span className="text-base md:text-lg text-black/20 line-through">₹{product.regularPrice}</span>
+                                <span className="text-base md:text-lg text-black/20 line-through">{formatPrice(product.regularPrice)}</span>
                             )}
                         </div>
 

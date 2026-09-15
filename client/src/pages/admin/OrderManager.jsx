@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Package, ChevronDown, Trash2, CheckCircle2, Clock, Truck, ShieldCheck } from 'lucide-react';
 import socket from '../../lib/socket';
+import { useCurrency } from '../../context/CurrencyContext';
 
 const AdminOrders = () => {
+    const { formatPrice } = useCurrency();
     const [orders, setOrders] = useState([]);
     const [selectedOrders, setSelectedOrders] = useState([]);
 
@@ -131,7 +133,7 @@ const AdminOrders = () => {
                                 </div>
                             </div>
                             <div className="mt-6 md:mt-0 flex flex-wrap items-center gap-6 pl-10 md:pl-0">
-                                <span className="text-xl font-black italic tracking-tighter italic">₹{order.totalAmount}</span>
+                                <span className="text-xl font-black italic tracking-tighter italic">{formatPrice(order.totalAmount)}</span>
                                 <div className="relative group">
                                     <select
                                         value={order.status}
@@ -169,7 +171,7 @@ const AdminOrders = () => {
                                         <p className="text-[9px] text-black/40 font-bold uppercase tracking-widest italic">{item.quantity} units per manifesto</p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-[10px] font-black tracking-widest italic">₹{item.price * item.quantity}</p>
+                                        <p className="text-[10px] font-black tracking-widest italic">{formatPrice(item.price * item.quantity)}</p>
                                         <p className="text-[8px] text-black/20 font-black uppercase tracking-widest">Accumulated</p>
                                     </div>
                                 </div>

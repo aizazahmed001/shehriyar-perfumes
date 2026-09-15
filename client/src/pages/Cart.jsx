@@ -4,10 +4,12 @@ import { useAuth } from '../context/AuthContext';
 import { Trash2, ShoppingBag, Plus, Minus, CreditCard, MapPin, User as UserIcon, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { useCurrency } from '../context/CurrencyContext';
 
 const Cart = () => {
     const { cart, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
     const { user, isAuthenticated } = useAuth();
+    const { formatPrice } = useCurrency();
     const [loading, setLoading] = useState(false);
     const [showCheckout, setShowCheckout] = useState(false);
     const [checkoutData, setCheckoutData] = useState({
@@ -69,7 +71,7 @@ const Cart = () => {
                                         <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-black text-black/40">{item.category}</p>
                                         <h3 className="text-xl md:text-2xl font-serif group-hover:italic transition-all">{item.name}</h3>
                                     </div>
-                                    <p className="text-lg md:text-xl font-bold tracking-tight">₹{item.price.toLocaleString('en-IN')}</p>
+                                    <p className="text-lg md:text-xl font-bold tracking-tight">{formatPrice(item.price)}</p>
 
                                     <div className="flex items-center justify-center sm:justify-start gap-6 md:gap-8 pt-2 md:pt-4">
                                         <div className="flex items-center border border-black px-3 py-1.5 md:px-4 md:py-2">
@@ -108,7 +110,7 @@ const Cart = () => {
                             <div className="space-y-6">
                                 <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-black/60">
                                     <span>Subtotal</span>
-                                    <span className="text-black">₹{cartTotal.toLocaleString('en-IN')}</span>
+                                    <span className="text-black">{formatPrice(cartTotal)}</span>
                                 </div>
                                 <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-black/60">
                                     <span>Shipping</span>
@@ -116,12 +118,12 @@ const Cart = () => {
                                 </div>
                                 <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-black/60">
                                     <span>Tax (18%)</span>
-                                    <span className="text-black">₹{Math.round(cartTotal * 0.18).toLocaleString('en-IN')}</span>
+                                    <span className="text-black">{formatPrice(Math.round(cartTotal * 0.18))}</span>
                                 </div>
                                 <div className="h-px bg-black/5 my-4"></div>
                                 <div className="flex justify-between items-baseline">
                                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black">Total</span>
-                                    <span className="text-3xl font-bold tracking-tighter">₹{(cartTotal + Math.round(cartTotal * 0.18)).toLocaleString('en-IN')}</span>
+                                    <span className="text-3xl font-bold tracking-tighter">{formatPrice(cartTotal + Math.round(cartTotal * 0.18))}</span>
                                 </div>
                             </div>
 

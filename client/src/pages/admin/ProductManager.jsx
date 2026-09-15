@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useCurrency } from '../../context/CurrencyContext';
 import { Plus, Edit2, Trash2, X, Archive, Tag, Package, Layers } from 'lucide-react';
 
 const AdminProducts = () => {
+    const { formatPrice, currency } = useCurrency();
     const [products, setProducts] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editingId, setEditingId] = useState(null);
@@ -160,7 +162,7 @@ const AdminProducts = () => {
                                 <td className="px-8 py-8">
                                     <span className="text-[9px] font-black uppercase tracking-[0.2em] border border-black/10 px-3 py-1">{product.category}</span>
                                 </td>
-                                <td className="px-8 py-8 text-[11px] font-black tracking-widest text-right italic">₹{product.price}</td>
+                                <td className="px-8 py-8 text-[11px] font-black tracking-widest text-right italic">{formatPrice(product.price)}</td>
                                 <td className="px-8 py-8 text-[10px] font-black text-right text-black/40 italic">{product.stock}</td>
                                 <td className="px-8 py-8 text-right">
                                     <div className="flex justify-end gap-2">
@@ -194,7 +196,7 @@ const AdminProducts = () => {
                             <div className="flex gap-8">
                                 <div>
                                     <p className="text-[8px] font-black uppercase tracking-widest text-black/20 mb-1">Value</p>
-                                    <p className="text-xs font-black tracking-tighter italic">₹{product.price}</p>
+                                    <p className="text-xs font-black tracking-tighter italic">{formatPrice(product.price)}</p>
                                 </div>
                                 <div>
                                     <p className="text-[8px] font-black uppercase tracking-widest text-black/20 mb-1">Units</p>
@@ -234,7 +236,7 @@ const AdminProducts = () => {
                                     <input required type="text" className="w-full px-4 py-3 border-b border-black/5 focus:border-black bg-transparent text-black font-medium text-sm outline-none transition-all placeholder:text-black/10" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] uppercase tracking-widest font-black text-black/40 ml-1">Value (₹)</label>
+                                    <label className="text-[10px] uppercase tracking-widest font-black text-black/40 ml-1">Value ({currency})</label>
                                     <input required type="text" className="w-full px-4 py-3 border-b border-black/5 focus:border-black bg-transparent text-black font-medium text-sm outline-none transition-all placeholder:text-black/10" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} />
                                 </div>
                                 <div className="space-y-1">

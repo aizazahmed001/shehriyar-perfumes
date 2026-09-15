@@ -5,10 +5,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, Banknote, ShoppingBag, Truck, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useCurrency } from '../context/CurrencyContext';
 
 const Checkout = () => {
     const { cart, cartTotal, clearCart } = useCart();
     const { user, token } = useAuth();
+    const { formatPrice } = useCurrency();
     const navigate = useNavigate();
     const [address, setAddress] = useState(user?.address || '');
     const [loading, setLoading] = useState(false);
@@ -213,7 +215,7 @@ const Checkout = () => {
                                         <div className="flex-1 space-y-1">
                                             <h3 className="text-[10px] font-black uppercase tracking-wider text-black line-clamp-1">{item.name}</h3>
                                             <p className="text-[9px] text-black/40 font-bold tracking-widest uppercase">Qty: {item.quantity}</p>
-                                            <p className="text-xs font-bold tracking-tighter mt-1">₹{parseCurrency(item.price) * item.quantity}</p>
+                                            <p className="text-xs font-bold tracking-tighter mt-1">{formatPrice(parseCurrency(item.price) * item.quantity)}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -223,11 +225,11 @@ const Checkout = () => {
                             <div className="space-y-6 pt-6 border-t border-black/5">
                                 <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-black/40">
                                     <span>Base Value</span>
-                                    <span className="text-black">₹{subtotal}</span>
+                                    <span className="text-black">{formatPrice(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-black/40">
                                     <span>Tax Attribution</span>
-                                    <span className="text-black">₹{gstAmount}</span>
+                                    <span className="text-black">{formatPrice(gstAmount)}</span>
                                 </div>
                                 <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-black/40">
                                     <span>Logistics</span>
@@ -236,7 +238,7 @@ const Checkout = () => {
                                 <div className="h-px bg-black/5 my-4"></div>
                                 <div className="flex justify-between items-baseline">
                                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black">Total</span>
-                                    <span className="text-3xl font-bold tracking-tighter text-black">₹{grandTotal}</span>
+                                    <span className="text-3xl font-bold tracking-tighter text-black">{formatPrice(grandTotal)}</span>
                                 </div>
                             </div>
 

@@ -7,10 +7,12 @@ import AuthModal from './AuthModal';
 import UserAvatar from './UserAvatar';
 import axios from 'axios';
 import { demoProducts } from '../data/demoProducts';
+import { useCurrency } from '../context/CurrencyContext';
 
 const Navbar = () => {
     const { cart } = useCart();
     const { user, logout, isAuthenticated } = useAuth();
+    const { currency, currencies, changeCurrency, formatPrice } = useCurrency();
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [showUserMenu, setShowUserMenu] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -71,7 +73,7 @@ const Navbar = () => {
                             <Menu className="w-6 h-6" />
                         </button>
                         <Link to="/" className="text-base sm:text-2xl font-serif font-black tracking-tighter flex items-center whitespace-nowrap">
-                            SHERIYAR<span className="font-light ml-1">PERFUMES</span>
+                            SHERIYAR<span className="font-light ml-1">PERFUME</span>
                         </Link>
                     </div>
 
@@ -109,7 +111,7 @@ const Navbar = () => {
                                                 <p className="font-bold text-sm line-clamp-1">{product.name}</p>
                                                 <p className="text-[10px] uppercase tracking-wider opacity-60">{product.category}</p>
                                             </div>
-                                            <span className="font-black text-sm">₹{product.price}</span>
+                                            <span className="font-black text-sm">{formatPrice(product.price)}</span>
                                         </button>
                                     ))}
                                 </div>
@@ -131,6 +133,17 @@ const Navbar = () => {
                             <Link to="/shop" className="text-black/60 hover:text-black transition-colors">Shop</Link>
                             <Link to="/orders" className="text-black/60 hover:text-black transition-colors">Orders</Link>
                         </div>
+
+                        <select
+                            value={currency}
+                            onChange={(event) => changeCurrency(event.target.value)}
+                            aria-label="Choose currency"
+                            className="bg-transparent border-b border-black/20 px-1 py-1 text-[9px] font-black tracking-widest outline-none cursor-pointer"
+                        >
+                            {Object.keys(currencies).map((code) => (
+                                <option key={code} value={code}>{code}</option>
+                            ))}
+                        </select>
 
                         <Link to="/cart" className="relative text-black hover:scale-110 transition-transform">
                             <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />

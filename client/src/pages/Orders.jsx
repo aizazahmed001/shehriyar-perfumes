@@ -5,10 +5,12 @@ import socket from '../lib/socket';
 import { Package, Clock, XCircle, CheckCircle } from 'lucide-react';
 
 import { useAuth } from '../context/AuthContext';
+import { useCurrency } from '../context/CurrencyContext';
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
     const { token } = useAuth();
+    const { formatPrice } = useCurrency();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
@@ -110,7 +112,7 @@ const Orders = () => {
                             
                             <div className="text-left md:text-right flex flex-col items-start md:items-end gap-6 mt-8 md:mt-0">
                                 <div>
-                                    <span className="block text-3xl font-bold tracking-tighter">₹{order.totalAmount}</span>
+                                    <span className="block text-3xl font-bold tracking-tighter">{formatPrice(order.totalAmount)}</span>
                                     <span className="text-[8px] text-black/20 font-black uppercase tracking-[0.3em] font-bold mt-1 block">Prot: {order.paymentMethod === 'cod' ? 'Deferred' : 'Digital'}</span>
                                 </div>
                                 {order.status === 'Pending' && (

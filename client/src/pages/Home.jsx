@@ -10,12 +10,14 @@ import socket from '../lib/socket';
 import ProductSkeleton from '../components/ProductSkeleton';
 import { getLocalProductImage, getProductImage } from '../lib/productMedia';
 import { demoProducts } from '../data/demoProducts';
+import { useCurrency } from '../context/CurrencyContext';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
     const [featuredProducts, setFeaturedProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const { addToCart } = useCart();
+    const { formatPrice } = useCurrency();
 
     useEffect(() => {
         fetchProducts();
@@ -57,7 +59,17 @@ const Home = () => {
     return (
         <div className="bg-white min-h-screen">
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 border-b border-black/5">
+            <section className="relative overflow-hidden pt-32 pb-20 lg:pt-48 lg:pb-32 border-b border-black/5">
+                <video
+                    className="absolute inset-0 w-full h-full object-cover"
+                    src="/assets/homepage.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    aria-hidden="true"
+                />
+                <div className="absolute inset-0 bg-white/40"></div>
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="flex flex-col items-center text-center space-y-12 animate-fadeIn">
                         <div className="space-y-4">
@@ -179,7 +191,7 @@ const Home = () => {
                                         </div>
 
                                         <div className="flex items-center justify-between border-t border-black/5 pt-3 md:pt-4">
-                                            <p className="text-base md:text-lg font-bold tracking-tight">₹{product.sellPrice || product.price}</p>
+                                            <p className="text-base md:text-lg font-bold tracking-tight">{formatPrice(product.sellPrice || product.price)}</p>
                                             <button
                                                 onClick={() => addToCart(product)}
                                                 className="text-[10px] font-black uppercase tracking-widest hover:underline"

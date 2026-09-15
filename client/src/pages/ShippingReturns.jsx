@@ -1,7 +1,9 @@
 import React from 'react';
+import { useCurrency } from '../context/CurrencyContext';
 import { Truck, RefreshCw, Clock, ShieldCheck, AlertCircle } from 'lucide-react';
 
 const ShippingReturns = () => {
+    const { formatPrice } = useCurrency();
     return (
         <div className="min-h-screen bg-white pt-32 pb-20 font-sans">
             {/* Header */}
@@ -28,7 +30,7 @@ const ShippingReturns = () => {
                     <div className="space-y-12">
                         <div className="border-l-2 border-black pl-8 py-2">
                             <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-2 font-serif italic">Complimentary Dispatch</h3>
-                            <p className="text-black/40 text-[10px] uppercase tracking-widest font-black">Standard logistics are complimentary for acquisitions exceeding ₹999.</p>
+                            <p className="text-black/40 text-[10px] uppercase tracking-widest font-black">Standard logistics are complimentary for acquisitions exceeding {formatPrice(999)}.</p>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-12">
