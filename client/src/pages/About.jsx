@@ -14,7 +14,7 @@ const About = () => {
                 <div className="about-hero-pattern absolute inset-0" aria-hidden="true"></div>
                 <div className="container relative z-10 mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:py-40">
                     <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
-                        <div className="max-w-4xl">
+                        <div className="about-hero-copy max-w-4xl">
                             <p className="mb-6 text-[10px] font-black uppercase tracking-[0.5em] text-white/45">The House of Sheriyar</p>
                             <h1 className="max-w-3xl font-serif text-5xl leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
                                 Fragrance with a <span className="italic text-white/55">point of view.</span>
@@ -45,11 +45,11 @@ const About = () => {
 
             <section className="container mx-auto px-4 py-20 sm:px-6 sm:py-28 lg:py-36">
                 <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-24">
-                    <div>
+                    <div className="about-reveal">
                         <p className="text-[10px] font-black uppercase tracking-[0.45em] text-black/35">Our philosophy</p>
                         <h2 className="mt-5 max-w-md font-serif text-4xl leading-tight sm:text-5xl">A considered ritual, from first note to final trail.</h2>
                     </div>
-                    <div className="max-w-2xl space-y-6 text-sm font-medium leading-loose text-black/60 sm:text-base">
+                    <div className="about-reveal about-reveal-delay max-w-2xl space-y-6 text-sm font-medium leading-loose text-black/60 sm:text-base">
                         <p>
                             We curate modern perfumery with an appreciation for balance: luminous openings, memorable hearts, and deep dry-downs that stay with you long after the room has changed.
                         </p>
@@ -69,7 +69,7 @@ const About = () => {
                     ].map((feature) => {
                         const FeatureIcon = feature.icon;
                         return (
-                            <div key={feature.title} className="bg-[#f7f7f5] px-2 py-12 sm:px-8 lg:px-12 lg:py-16">
+                            <div key={feature.title} className="about-reveal bg-[#f7f7f5] px-2 py-12 sm:px-8 lg:px-12 lg:py-16">
                                 <FeatureIcon className="h-5 w-5 text-black/45" />
                                 <h3 className="mt-8 text-[11px] font-black uppercase tracking-[0.3em]">{feature.title}</h3>
                                 <p className="mt-4 max-w-xs text-xs font-medium leading-loose text-black/50">{feature.text}</p>

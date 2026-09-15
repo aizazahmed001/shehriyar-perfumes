@@ -11,10 +11,10 @@ import ProductSkeleton from '../components/ProductSkeleton';
 import { getLocalProductImage, getProductImage } from '../lib/productMedia';
 import { demoProducts } from '../data/demoProducts';
 import { useCurrency } from '../context/CurrencyContext';
+import './Home.css';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
-    const [featuredProducts, setFeaturedProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const { addToCart } = useCart();
     const { formatPrice } = useCurrency();
@@ -47,15 +47,12 @@ const Home = () => {
             const res = await axios.get('http://localhost:5001/api/products');
             if (res.data && res.data.length === 0) {
                 setProducts(demoProducts);
-                setFeaturedProducts(demoProducts.slice(0, 4));
             } else {
                 setProducts(res.data);
-                setFeaturedProducts(res.data.length > 4 ? res.data.slice(0, 4) : res.data);
             }
         } catch (err) {
             console.error(err);
             setProducts(demoProducts);
-            setFeaturedProducts(demoProducts.slice(0, 4));
         } finally {
             setLoading(false);
         }
@@ -74,7 +71,7 @@ const Home = () => {
             <section className="relative overflow-hidden pt-32 pb-20 lg:pt-48 lg:pb-32 border-b border-black/5">
                 <video
                     ref={heroVideoRef}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="home-hero-video absolute inset-0 w-full h-full object-cover"
                     src="/assets/homepage.mp4"
                     autoPlay
                     muted
@@ -88,7 +85,7 @@ const Home = () => {
                 />
                 <div className="absolute inset-0 bg-white/40"></div>
                 <div className="container mx-auto px-6 relative z-10">
-                    <div className="flex flex-col items-center text-center space-y-12 animate-fadeIn">
+                    <div className="home-hero-copy flex flex-col items-center text-center space-y-12">
                         <div className="space-y-4">
                             <p className="text-[10px] uppercase tracking-[0.4em] font-black text-black/40">Exclusive Collection 2026</p>
                             <h1 className="luxury-title">
@@ -128,7 +125,7 @@ const Home = () => {
                             { icon: BadgeCheck, title: "AUTHENTICITY", desc: "100% Original Selection" },
                             { icon: PackageCheck, title: "LUXURY WRAPPING", desc: "Elegant gift options" },
                         ].map((item, idx) => (
-                            <div key={idx} className="flex flex-col items-center text-center space-y-4">
+                            <div key={idx} className="home-feature-item flex flex-col items-center text-center space-y-4">
                                 <item.icon className="w-7 h-7 opacity-55" strokeWidth={1.5} />
                                 <div className="space-y-1">
                                     <h3 className="text-[10px] font-black tracking-widest">{item.title}</h3>
@@ -153,7 +150,7 @@ const Home = () => {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-black/5 border border-black/5">
                         {categories.map((cat, idx) => (
-                            <Link key={idx} to={`/shop?category=${cat.name}`} className="group relative bg-white p-8 md:p-12 hover:bg-black transition-colors duration-700 text-center">
+                            <Link key={idx} to={`/shop?category=${cat.name}`} className="home-category-card group relative bg-white p-8 md:p-12 hover:bg-black transition-colors duration-700 text-center">
                                 <div className="space-y-4 md:space-y-6">
                                     <cat.icon className="w-7 h-7 md:w-8 md:h-8 mx-auto group-hover:text-white transition-colors duration-700 opacity-45 group-hover:opacity-100" strokeWidth={1.5} />
                                     <h3 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.3em] font-serif group-hover:text-white transition-colors duration-700">{cat.name}</h3>
@@ -180,7 +177,7 @@ const Home = () => {
                             <ProductSkeleton count={4} />
                         ) : (
                             products.slice(0, 8).map((product) => (
-                                <div key={product._id} className="group relative flex flex-col space-y-5 md:space-y-6 animate-fadeIn">
+                                <div key={product._id} className="home-product-card group relative flex flex-col space-y-5 md:space-y-6">
                                     <Link to={`/product/${product._id}`} className="block relative aspect-[4/5] bg-white overflow-hidden border border-black/5 group-hover:border-black transition-colors duration-500">
                                         <img
                                             src={getProductImage(product)}

@@ -1,0 +1,95 @@
+.home-hero-copy > * {
+    opacity: 0;
+    animation: homeReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.home-hero-copy > :nth-child(1) { animation-delay: 0.15s; }
+.home-hero-copy > :nth-child(2) { animation-delay: 0.3s; }
+.home-hero-copy > :nth-child(3) { animation-delay: 0.45s; }
+
+.home-hero-video {
+    animation: heroVideoScale 12s ease-out both;
+}
+
+.home-feature-item,
+.home-category-card,
+.home-product-card {
+    animation: homeReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.home-feature-item:nth-child(1),
+.home-category-card:nth-child(1),
+.home-product-card:nth-child(1) { animation-delay: 0.05s; }
+.home-feature-item:nth-child(2),
+.home-category-card:nth-child(2),
+.home-product-card:nth-child(2) { animation-delay: 0.12s; }
+.home-feature-item:nth-child(3),
+.home-category-card:nth-child(3),
+.home-product-card:nth-child(3) { animation-delay: 0.19s; }
+.home-feature-item:nth-child(4),
+.home-category-card:nth-child(4),
+.home-product-card:nth-child(4) { animation-delay: 0.26s; }
+
+.home-category-card {
+    transition: background-color 700ms ease, transform 500ms ease;
+}
+
+.home-category-card:hover {
+    transform: translateY(-6px);
+}
+
+.home-category-card svg,
+.home-feature-item svg {
+    transition: transform 500ms ease, opacity 500ms ease;
+}
+
+.home-category-card:hover svg {
+    transform: translateY(-4px) scale(1.08);
+}
+
+.home-feature-item:hover svg {
+    transform: translateY(-3px);
+    opacity: 0.85;
+}
+
+.home-product-card img {
+    transition: transform 1000ms cubic-bezier(0.16, 1, 0.3, 1), filter 1000ms ease, opacity 700ms ease;
+}
+
+.home-product-card:hover img {
+    transform: scale(1.08);
+}
+
+@keyframes homeReveal {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heroVideoScale {
+    from { transform: scale(1.08); }
+    to { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-hero-copy > *,
+    .home-feature-item,
+    .home-category-card,
+    .home-product-card,
+    .home-hero-video {
+        animation: none;
+        opacity: 1;
+    }
+
+    .home-category-card:hover,
+    .home-category-card:hover svg,
+    .home-feature-item:hover svg,
+    .home-product-card:hover img {
+        transform: none;
+    }
+}
