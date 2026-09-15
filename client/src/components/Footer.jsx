@@ -72,11 +72,14 @@ const Footer = () => {
                         <ul className="space-y-6 text-xs font-bold uppercase tracking-wider text-white/60">
                             <li className="flex items-start gap-4">
                                 <MapPin className="w-4 h-4 opacity-40 shrink-0" />
-                                <span className="tracking-widest">Dargai, Malakand</span>
+                                <span className="tracking-widest">Taj Mahal Dargai, Malakand</span>
+                                 <p>/</p>
+                                 <span className="tracking-widest">AL AIN SANIYA DUBAI</span>
                             </li>
                             <li className="flex items-center gap-4">
                                 <Phone className="w-4 h-4 opacity-40 shrink-0" />
-                                <span className="tracking-widest">+92 3377547848</span>
+                                <span className="tracking-widest">+92 3377547848 </span>
+                                <p>/</p>
                                 <span className="tracking-widest">+971 568410103</span>
                             </li>
                             <li className="flex items-center gap-4">
