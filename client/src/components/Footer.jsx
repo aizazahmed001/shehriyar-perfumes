@@ -94,7 +94,7 @@ const Footer = () => {
                 <div className="border-t border-white/5 pt-12">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8 text-center md:text-left">
                         <p className="text-white/20 text-[10px] uppercase font-black tracking-[0.2em]">
-                            © {new Date().getFullYear()} SHERIYAR PERFUME. All rights reserved.
+                            © {new Date().getFullYear()} SHERYAR PERFUME. All rights reserved.
                         </p>
                         <div className="flex items-center gap-8">
                             <span className="text-white/20 text-[10px] uppercase font-black tracking-[0.2em] italic">Crafted for Elegance</span>

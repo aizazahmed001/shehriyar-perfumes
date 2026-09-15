@@ -73,7 +73,7 @@ const Navbar = () => {
                             <Menu className="w-6 h-6" />
                         </button>
                         <Link to="/" className="text-base sm:text-2xl font-serif font-black tracking-tighter flex items-center whitespace-nowrap">
-                            SHERIYAR<span className="font-light ml-1">PERFUME</span>
+                            SHERYAR<span className="font-light ml-1">PERFUME</span>
                         </Link>
                     </div>
 
