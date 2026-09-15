@@ -66,18 +66,18 @@ const Orders = () => {
     );
 
     return (
-        <div className="pt-40 pb-20 bg-white min-h-screen">
-            <div className="container mx-auto px-6 max-w-5xl">
-                <div className="flex flex-col items-center text-center mb-20 space-y-4">
+        <div className="pt-28 sm:pt-40 pb-16 sm:pb-20 bg-white min-h-screen">
+            <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+                <div className="flex flex-col items-center text-center mb-12 sm:mb-20 space-y-4">
                     <p className="text-[10px] uppercase tracking-[0.4em] font-black text-black/40">History</p>
-                    <h1 className="text-5xl font-serif">Order <span className="italic">Archive</span></h1>
+                    <h1 className="text-4xl sm:text-5xl font-serif">Order <span className="italic">Archive</span></h1>
                 </div>
 
                 <div className="space-y-8">
                     {orders.map((order) => (
-                        <div key={order._id} className="group bg-white border border-black/5 p-8 flex flex-col md:flex-row justify-between md:items-center hover:border-black transition-all animate-fadeIn">
+                        <div key={order._id} className="group bg-white border border-black/5 p-5 sm:p-8 flex flex-col md:flex-row justify-between md:items-center hover:border-black transition-all animate-fadeIn">
                             <div className="space-y-6">
-                                <div className="flex items-center gap-6">
+                                <div className="flex flex-wrap items-center gap-3 sm:gap-6">
                                     <div className="opacity-20"><Package className="w-5 h-5" /></div>
                                     <span className="text-[10px] font-black uppercase tracking-[0.2em]">Transaction #{order._id.slice(-6).toUpperCase()}</span>
                                     <span className={`px-4 py-1 text-[8px] font-black uppercase tracking-[0.2em] border ${order.status === 'Pending' ? 'border-black/10 text-black/40' :

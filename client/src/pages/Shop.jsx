@@ -76,11 +76,11 @@ const Shop = () => {
     };
 
     return (
-        <div className="pt-40 pb-20 bg-white min-h-screen">
-            <div className="container mx-auto px-6">
-                <div className="flex flex-col items-center text-center mb-20 space-y-4">
+        <div className="pt-28 sm:pt-40 pb-16 sm:pb-20 bg-white min-h-screen">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div className="flex flex-col items-center text-center mb-12 sm:mb-20 space-y-4">
                     <p className="text-[10px] uppercase tracking-[0.4em] font-black text-black/40">The Collection</p>
-                    <h1 className="text-5xl font-serif">Curated <span className="italic">Fragments</span></h1>
+                    <h1 className="text-4xl sm:text-5xl font-serif">Curated <span className="italic">Fragments</span></h1>
                 </div>
 
                 {/* Filters */}
@@ -123,7 +123,7 @@ const Shop = () => {
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12">
                     {loading ? (
                         <ProductSkeleton count={8} />
                     ) : (

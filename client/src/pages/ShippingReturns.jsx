@@ -9,7 +9,7 @@ const ShippingReturns = () => {
                 <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
                 <div className="container mx-auto px-6 text-center relative z-10">
                     <p className="text-[10px] uppercase tracking-[0.5em] font-black text-white/40 mb-4">Logistics & Reversals</p>
-                    <h1 className="text-5xl font-serif italic mb-4">Shipping <span className="text-white/40">&</span> <span className="text-white/80">Returns</span></h1>
+                    <h1 className="text-4xl sm:text-5xl font-serif italic mb-4">Shipping <span className="text-white/40">&</span> <span className="text-white/80">Returns</span></h1>
                     <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-black">Comprehensive guide to delivery and retrieval protocols.</p>
                 </div>
             </div>
@@ -17,7 +17,7 @@ const ShippingReturns = () => {
             <div className="container mx-auto px-6 max-w-5xl">
 
                 {/* Shipping Section */}
-                <section className="bg-white border border-black/5 shadow-2xl p-12 md:p-20 mb-20">
+                <section className="bg-white border border-black/5 shadow-2xl p-6 sm:p-12 md:p-20 mb-12 sm:mb-20">
                     <div className="flex items-center gap-6 mb-12">
                         <div className="w-12 h-12 border border-black/5 flex items-center justify-center">
                             <Truck className="w-5 h-5 opacity-40" />
@@ -66,7 +66,7 @@ const ShippingReturns = () => {
                 </section>
 
                 {/* Returns Section */}
-                <section className="bg-white border border-black/5 shadow-2xl p-12 md:p-20">
+                <section className="bg-white border border-black/5 shadow-2xl p-6 sm:p-12 md:p-20">
                     <div className="flex items-center gap-6 mb-12">
                         <div className="w-12 h-12 border border-black/5 flex items-center justify-center">
                             <RefreshCw className="w-5 h-5 opacity-40" />

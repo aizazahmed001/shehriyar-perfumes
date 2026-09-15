@@ -45,14 +45,14 @@ const Cart = () => {
     }
 
     return (
-        <div className="pt-40 pb-20 bg-white min-h-screen">
-            <div className="container mx-auto px-6 max-w-7xl">
-                <div className="flex flex-col items-center text-center mb-20 space-y-4">
+        <div className="pt-28 sm:pt-40 pb-16 sm:pb-20 bg-white min-h-screen">
+            <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+                <div className="flex flex-col items-center text-center mb-12 sm:mb-20 space-y-4">
                     <p className="text-[10px] uppercase tracking-[0.4em] font-black text-black/40">Your Selection</p>
-                    <h1 className="text-5xl font-serif">Curated <span className="italic">Cart</span></h1>
+                    <h1 className="text-4xl sm:text-5xl font-serif">Curated <span className="italic">Cart</span></h1>
                 </div>
 
-                <div className="grid lg:grid-cols-3 gap-16">
+                <div className="grid lg:grid-cols-3 gap-10 lg:gap-16">
                     {/* Cart Items */}
                     <div className="lg:col-span-2 space-y-8 md:space-y-12">
                         {cart.map((item) => (
@@ -102,7 +102,7 @@ const Cart = () => {
 
                     {/* Order Summary */}
                     <div className="lg:col-span-1">
-                        <div className="bg-white border border-black/5 p-10 sticky top-40 space-y-10">
+                        <div className="bg-white border border-black/5 p-6 sm:p-10 lg:sticky lg:top-40 space-y-8 sm:space-y-10">
                             <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-black/40">Statement Summary</h3>
 
                             <div className="space-y-6">

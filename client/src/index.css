@@ -3,8 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    overflow-x: hidden;
+  }
+
   body {
     @apply bg-white text-black font-sans antialiased;
+    min-width: 320px;
+    overflow-x: hidden;
   }
 }
 
@@ -82,5 +88,12 @@
 }
 
 .luxury-title {
-  @apply text-5xl md:text-7xl font-serif font-light tracking-tight;
+  @apply text-4xl sm:text-5xl md:text-7xl font-serif font-light tracking-tight;
+}
+
+@media (max-width: 639px) {
+  .monochrome-btn,
+  .monochrome-btn-outline {
+    @apply px-5 py-3 text-xs;
+  }
 }

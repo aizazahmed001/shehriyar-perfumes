@@ -7,10 +7,10 @@ const TermsConditions = () => {
             <div className="container mx-auto px-6 max-w-4xl">
                 <div className="bg-white border border-black/5 overflow-hidden shadow-2xl">
                     {/* Header */}
-                    <div className="bg-black text-white p-12 md:p-20 relative overflow-hidden text-center">
+                    <div className="bg-black text-white p-6 sm:p-12 md:p-20 relative overflow-hidden text-center">
                         <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
                         <div className="relative z-10">
-                            <h1 className="text-4xl md:text-6xl font-serif tracking-tight italic mb-6">Terms <span className="opacity-40">&</span> <span className="text-white/80">Provisions</span></h1>
+                            <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif tracking-tight italic mb-6">Terms <span className="opacity-40">&</span> <span className="text-white/80">Provisions</span></h1>
                             <p className="text-white/40 text-[10px] uppercase tracking-[0.5em] font-black leading-relaxed">
                                 Latest Authorization: January 1, 2026 <br />
                                 <span className="text-white/20 mt-2 block italic text-[8px]">Please analyze these statutes before engaging with the boutique terminal.</span>
@@ -19,7 +19,7 @@ const TermsConditions = () => {
                     </div>
 
                     {/* Content */}
-                    <div className="p-10 md:p-20 space-y-20">
+                    <div className="p-6 sm:p-10 md:p-20 space-y-12 md:space-y-20">
                         <div className="max-w-none text-black/60">
                             <p className="text-sm font-black uppercase tracking-[0.2em] leading-loose mb-12 border-l-2 border-black pl-8 italic">
                                 Welcome to the Luxury Perfume Archive. By interfacing with our digital terminal, you acknowledge and agree to be bound by these exhaustive Terms and Conditions and our Privacy Protocol.
@@ -78,7 +78,7 @@ const TermsConditions = () => {
                             </p>
                         </section>
 
-                        <div className="bg-black p-12 text-center shadow-xl">
+                        <div className="bg-black p-6 sm:p-12 text-center shadow-xl">
                             <p className="text-white/20 text-[8px] font-black uppercase tracking-[0.4em] mb-4 font-sans">Liaison Contact</p>
                             <p className="text-white text-[10px] uppercase tracking-[0.2em] font-black underline hover:text-white/60 transition-colors">
                                 concierge@perfume-store.com

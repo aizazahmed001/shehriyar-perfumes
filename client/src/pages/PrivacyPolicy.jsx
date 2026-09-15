@@ -4,17 +4,17 @@ import { Lock, Eye, FileText, Globe } from 'lucide-react';
 const PrivacyPolicy = () => {
     return (
         <div className="min-h-screen bg-white pt-32 pb-20 font-sans">
-            <div className="container mx-auto px-6 max-w-4xl">
+            <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
                 <div className="bg-white border border-black/5 overflow-hidden shadow-2xl">
                     {/* Header */}
-                    <div className="bg-black text-white p-12 md:p-20 relative overflow-hidden">
+                    <div className="bg-black text-white p-6 sm:p-12 md:p-20 relative overflow-hidden">
                         <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
                         <div className="relative z-10">
-                            <div className="flex items-center gap-6 mb-8">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-8">
                                 <div className="w-12 h-12 border border-white/20 flex items-center justify-center">
                                     <Lock className="w-5 h-5 opacity-40" />
                                 </div>
-                                <h1 className="text-4xl md:text-5xl font-serif tracking-tight italic">Privacy <span className="opacity-40 font-sans not-italic uppercase text-base tracking-[0.4em] ml-4 font-black">Protocols</span></h1>
+                                <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif tracking-tight italic">Privacy <span className="opacity-40 font-sans not-italic uppercase text-xs sm:text-base tracking-[0.3em] sm:tracking-[0.4em] ml-2 sm:ml-4 font-black">Protocols</span></h1>
                             </div>
                             <p className="text-white/40 text-[10px] uppercase tracking-[0.4em] font-black leading-relaxed">
                                 Effective Jurisdictional Date: January 1, 2026 <br />
@@ -24,7 +24,7 @@ const PrivacyPolicy = () => {
                     </div>
 
                     {/* Content */}
-                    <div className="p-10 md:p-20 space-y-16">
+                    <div className="p-6 sm:p-10 md:p-20 space-y-12 md:space-y-16">
                         <section className="group">
                             <div className="flex items-center gap-4 mb-8">
                                 <Eye className="w-4 h-4 opacity-20 group-hover:opacity-100 transition-opacity" />

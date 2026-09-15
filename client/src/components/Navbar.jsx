@@ -70,7 +70,7 @@ const Navbar = () => {
                         >
                             <Menu className="w-6 h-6" />
                         </button>
-                        <Link to="/" className="text-2xl font-serif font-black tracking-tighter flex items-center">
+                        <Link to="/" className="text-base sm:text-2xl font-serif font-black tracking-tighter flex items-center whitespace-nowrap">
                             SHERIYAR<span className="font-light ml-1">PERFUMES</span>
                         </Link>
                     </div>
@@ -117,7 +117,7 @@ const Navbar = () => {
                         )}
                     </div>
 
-                    <div className="flex items-center space-x-3 md:space-x-8">
+                    <div className="flex items-center space-x-3 sm:space-x-4 md:space-x-8">
                         {/* Mobile Search Icon Toggle */}
                         <button 
                             className="md:hidden text-black hover:scale-110 transition-transform"
@@ -198,7 +198,7 @@ const Navbar = () => {
                         ) : (
                             <button
                                 onClick={() => setShowAuthModal(true)}
-                                className="bg-black text-white px-5 md:px-8 py-2 md:py-3 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black border border-black transition-all"
+                                className="bg-black text-white px-3 sm:px-5 md:px-8 py-2 md:py-3 text-[9px] md:text-xs font-black uppercase tracking-[0.12em] sm:tracking-[0.2em] hover:bg-white hover:text-black border border-black transition-all"
                             >
                                 Login
                             </button>

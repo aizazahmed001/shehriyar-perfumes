@@ -64,8 +64,8 @@ const ProductDetail = () => {
     const images = product.images && product.images.length > 0 ? product.images : [product.image];
 
     return (
-        <div className="bg-white min-h-screen pt-40 pb-20">
-            <div className="container mx-auto px-6 max-w-7xl">
+        <div className="bg-white min-h-screen pt-28 sm:pt-40 pb-16 sm:pb-20">
+            <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
                 {/* Back Link */}
                 <button
                     onClick={() => navigate(-1)}
@@ -75,7 +75,7 @@ const ProductDetail = () => {
                     Back to Collection
                 </button>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 lg:gap-32">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-20 lg:gap-32">
                     {/* Left Column: Image Gallery */}
                     <div className="space-y-8 md:space-y-12">
                         <div className="bg-white aspect-square border border-black/5 flex items-center justify-center relative overflow-hidden group">
@@ -221,7 +221,7 @@ const ProductDetail = () => {
                                 {product.specifications && (typeof product.specifications === 'object') ? (
                                     Object.keys(product.specifications).length > 0 ? (
                                         Object.entries(product.specifications).map(([key, value], i) => (
-                                            <div key={i} className="flex justify-between py-4 border-b border-black/5">
+                                            <div key={i} className="flex flex-col sm:flex-row sm:justify-between gap-2 py-4 border-b border-black/5">
                                                 <span className="text-[10px] uppercase tracking-widest font-black text-black/40">{key}</span>
                                                 <span className="text-xs font-bold uppercase tracking-wider">{String(value)}</span>
                                             </div>

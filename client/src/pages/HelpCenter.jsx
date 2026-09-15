@@ -30,11 +30,11 @@ const HelpCenter = () => {
     return (
         <div className="min-h-screen bg-white pt-24 pb-20 font-sans">
             {/* Hero Section */}
-            <div className="bg-black text-white py-24 mb-20 relative overflow-hidden">
+            <div className="bg-black text-white py-16 sm:py-24 mb-12 sm:mb-20 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-                <div className="container mx-auto px-6 text-center relative z-10">
+                <div className="container mx-auto px-4 sm:px-6 text-center relative z-10">
                     <p className="text-[10px] uppercase tracking-[0.5em] font-black text-white/40 mb-4">Support Concierge</p>
-                    <h1 className="text-5xl font-serif mb-8 italic">How may we <span className="text-white/60">assist you?</span></h1>
+                    <h1 className="text-4xl sm:text-5xl font-serif mb-8 italic">How may we <span className="text-white/60">assist you?</span></h1>
                     <div className="max-w-2xl mx-auto relative group">
                         <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-white/20 w-4 h-4 group-focus-within:text-white transition-colors" />
                         <input
@@ -46,7 +46,7 @@ const HelpCenter = () => {
                 </div>
             </div>
 
-            <div className="container mx-auto px-6 max-w-6xl">
+            <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
                 {/* Topic Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-24">
                     {[

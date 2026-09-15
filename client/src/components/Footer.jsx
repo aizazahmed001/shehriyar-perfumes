@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
-        <footer className="bg-black text-white pt-32 pb-16 border-t border-white/5">
-            <div className="container mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
+        <footer className="bg-black text-white pt-20 sm:pt-32 pb-12 sm:pb-16 border-t border-white/5">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-16 mb-16 sm:mb-24">
                     {/* Brand Section */}
                     <div className="space-y-8">
-                        <Link to="/" className="text-2xl font-serif font-black tracking-tighter flex items-center">
+                        <Link to="/" className="text-xl sm:text-2xl font-serif font-black tracking-tighter flex items-center">
                             SHERIYAR<span className="font-light ml-1">PERFUME</span>
                         </Link>
                         <p className="text-gray-500 leading-relaxed text-xs uppercase tracking-widest font-bold">

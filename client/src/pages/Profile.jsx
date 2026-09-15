@@ -39,17 +39,17 @@ const Profile = () => {
     };
 
     return (
-        <div className="pt-40 pb-20 bg-white min-h-screen">
-            <div className="container mx-auto px-6 max-w-7xl">
-                <div className="flex flex-col items-center text-center mb-20 space-y-4">
+        <div className="pt-28 sm:pt-40 pb-16 sm:pb-20 bg-white min-h-screen">
+            <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+                <div className="flex flex-col items-center text-center mb-12 sm:mb-20 space-y-4">
                     <p className="text-[10px] uppercase tracking-[0.4em] font-black text-black/40">Custodian</p>
-                    <h1 className="text-5xl font-serif">Member <span className="italic">Profile</span></h1>
+                    <h1 className="text-4xl sm:text-5xl font-serif">Member <span className="italic">Profile</span></h1>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-16 lg:gap-24">
+                <div className="grid md:grid-cols-3 gap-10 lg:gap-24">
                     {/* Profile Card */}
                     <div className="md:col-span-1 space-y-12">
-                        <div className="bg-white border border-black/5 p-12 text-center space-y-8 animate-fadeIn">
+                        <div className="bg-white border border-black/5 p-6 sm:p-12 text-center space-y-8 animate-fadeIn">
                             <div className="relative inline-block">
                                 <div className="p-1 border border-black/10 rounded-full scale-110">
                                     <UserAvatar 
