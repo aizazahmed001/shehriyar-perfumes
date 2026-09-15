@@ -81,8 +81,8 @@ export const demoProducts = [
         price: 2799,
         regularPrice: 3199,
         sellPrice: 2499,
-        image: '/perfumes/arctic_frost.jpg',
-        images: ['/perfumes/arctic_frost.jpg'],
+        image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=85',
+        images: ['https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=85'],
         category: "Men's Perfumes",
         stock: 20,
         specifications: { 'Volume': '100ml', 'Longevity': '7-9 hours', 'Concentration': 'Eau de Toilette' }
