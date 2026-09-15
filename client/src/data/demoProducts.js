@@ -98,6 +98,69 @@ export const demoProducts = [
         category: 'Gift Sets',
         stock: 16,
         specifications: { 'Includes': '3 x 15ml', 'Longevity': 'Varies by fragrance', 'Concentration': 'Eau de Parfum' }
+    },
+    {
+        _id: 'demo-mystical-patchouli',
+        name: 'Mystical Patchouli',
+        description: 'Earthy patchouli, soft leather, and dark woods create a mysterious signature with lasting depth.',
+        price: 3399,
+        regularPrice: 3899,
+        sellPrice: 2999,
+        image: '/perfumes/mystical_patchouli.jpg',
+        images: ['/perfumes/mystical_patchouli.jpg'],
+        category: 'Luxury Perfumes',
+        stock: 13,
+        specifications: { 'Volume': '100ml', 'Longevity': '9-11 hours', 'Concentration': 'Eau de Parfum' }
+    },
+    {
+        _id: 'demo-lifestyle-saffron',
+        name: 'Lifestyle Saffron',
+        description: 'Radiant saffron and polished woods make a warm, modern fragrance designed for everyday distinction.',
+        price: 4199,
+        sellPrice: 3699,
+        image: '/perfumes/lifestyle_saffron.jpg',
+        images: ['/perfumes/lifestyle_saffron.jpg'],
+        category: 'Luxury Perfumes',
+        stock: 10,
+        specifications: { 'Volume': '100ml', 'Longevity': '9-10 hours', 'Concentration': 'Eau de Parfum' }
+    },
+    {
+        _id: 'demo-royal-collection',
+        name: 'The Royal Collection',
+        description: 'A grand collection of refined blends presented for gifting, celebration, and memorable occasions.',
+        price: 7499,
+        regularPrice: 8499,
+        sellPrice: 6999,
+        image: '/perfumes/the_royal_collection.jpg',
+        images: ['/perfumes/the_royal_collection.jpg'],
+        category: 'Gift Sets',
+        stock: 7,
+        specifications: { 'Includes': '4 signature fragrances', 'Longevity': 'Varies by fragrance', 'Concentration': 'Eau de Parfum' }
+    },
+    {
+        _id: 'demo-golden-amber',
+        name: 'Golden Amber',
+        description: 'Glowing amber, smooth vanilla, and a touch of spice create a rich and inviting evening scent.',
+        price: 3899,
+        regularPrice: 4499,
+        sellPrice: 3399,
+        image: '/perfumes/golden_amber.jpg',
+        images: ['/perfumes/golden_amber.jpg'],
+        category: 'Luxury Perfumes',
+        stock: 14,
+        specifications: { 'Volume': '100ml', 'Longevity': '8-10 hours', 'Concentration': 'Eau de Parfum' }
+    },
+    {
+        _id: 'demo-floral-mist',
+        name: 'Floral Mist',
+        description: 'A delicate veil of fresh florals and clean musk for an effortless, graceful everyday finish.',
+        price: 2299,
+        sellPrice: 1999,
+        image: '/perfumes/floral_mist.jpg',
+        images: ['/perfumes/floral_mist.jpg'],
+        category: "Women's Perfumes",
+        stock: 22,
+        specifications: { 'Volume': '75ml', 'Longevity': '6-8 hours', 'Concentration': 'Eau de Toilette' }
     }
 ];
 
