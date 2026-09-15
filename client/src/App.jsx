@@ -16,6 +16,7 @@ import HelpCenter from './pages/HelpCenter';
 import ShippingReturns from './pages/ShippingReturns';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsConditions from './pages/TermsConditions';
+import About from './pages/About';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { WishlistProvider } from './context/WishlistContext'; // Import WishlistProvider
@@ -58,6 +59,7 @@ function AppContent() {
         <Route path="/login" element={<AuthPage />} />
         <Route path="/" element={<><Navbar /><Home /></>} />
         <Route path="/shop" element={<><Navbar /><Shop /></>} />
+        <Route path="/about" element={<><Navbar /><About /></>} />
 
         <Route path="/product/:id" element={<><Navbar /><ProductDetail /></>} />
         <Route path="/help-center" element={<><Navbar /><HelpCenter /></>} />

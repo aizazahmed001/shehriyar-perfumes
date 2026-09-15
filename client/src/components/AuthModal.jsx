@@ -37,35 +37,36 @@ const AuthModal = ({ isOpen, onClose, mode: initialMode = 'login' }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative animate-fadeIn">
-                <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-dark transition">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white border border-black/10 shadow-2xl w-full max-w-md p-7 sm:p-10 relative animate-fadeIn">
+                <button onClick={onClose} aria-label="Close login panel" className="absolute top-5 right-5 text-black/25 hover:text-black transition-colors">
                     <X className="w-6 h-6" />
                 </button>
 
-                <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-dark mb-2">
-                        {mode === 'login' ? 'Welcome Back!' : 'Create Account'}
+                <div className="text-center mb-10">
+                    <p className="text-[9px] uppercase tracking-[0.45em] font-black text-black/35 mb-4">Sheriyar Perfume</p>
+                    <h2 className="text-4xl font-serif text-black mb-3">
+                        {mode === 'login' ? 'Welcome back.' : 'Create an account.'}
                     </h2>
-                    <p className="text-gray-500">
-                        {mode === 'login' ? 'Login to continue shopping' : 'Join us today'}
+                    <p className="text-[10px] text-black/40 uppercase tracking-[0.18em] font-bold">
+                        {mode === 'login' ? 'Sign in to continue your selection' : 'Begin your fragrance journey'}
                     </p>
                 </div>
 
                 {error && (
-                    <div className="bg-red-50 text-red-600 p-3 rounded-xl mb-4 text-sm">
+                    <div className="bg-red-50 text-red-600 p-3 mb-5 text-[10px] uppercase tracking-wider font-bold border border-red-100">
                         {error}
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     {mode === 'register' && (
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <div className="space-y-1">
+                            <label className="block text-[10px] uppercase tracking-widest font-black text-black/45 ml-1">Full Name</label>
                             <input
                                 type="text"
                                 required
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition"
+                                className="w-full px-4 py-3 border-b border-black/15 bg-transparent focus:border-black outline-none transition font-medium text-sm"
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="Mitul Aghara"
@@ -73,24 +74,24 @@ const AuthModal = ({ isOpen, onClose, mode: initialMode = 'login' }) => {
                         </div>
                     )}
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <div className="space-y-1">
+                            <label className="block text-[10px] uppercase tracking-widest font-black text-black/45 ml-1">Email Address</label>
                         <input
                             type="email"
                             required
-                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition"
+                                className="w-full px-4 py-3 border-b border-black/15 bg-transparent focus:border-black outline-none transition font-medium text-sm"
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             placeholder="you@example.com"
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <div className="space-y-1">
+                            <label className="block text-[10px] uppercase tracking-widest font-black text-black/45 ml-1">Password</label>
                         <input
                             type="password"
                             required
-                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition"
+                                className="w-full px-4 py-3 border-b border-black/15 bg-transparent focus:border-black outline-none transition font-medium text-sm"
                             value={formData.password}
                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             placeholder="••••••••"
@@ -100,21 +101,21 @@ const AuthModal = ({ isOpen, onClose, mode: initialMode = 'login' }) => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-gradient-to-r from-primary to-indigo-600 text-white py-4 rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50"
+                        className="monochrome-btn w-full py-4 disabled:opacity-50"
                     >
                         {loading ? 'Please wait...' : mode === 'login' ? 'Login' : 'Create Account'}
                     </button>
                 </form>
 
-                <div className="mt-6 text-center">
-                    <p className="text-gray-500 text-sm">
+                <div className="mt-8 text-center">
+                    <p className="text-black/45 text-[10px] uppercase tracking-widest font-bold">
                         {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
                         <button
                             onClick={() => {
                                 setMode(mode === 'login' ? 'register' : 'login');
                                 setError('');
                             }}
-                            className="text-primary font-semibold hover:underline"
+                            className="text-black font-black hover:italic transition-all"
                         >
                             {mode === 'login' ? 'Sign up' : 'Login'}
                         </button>
