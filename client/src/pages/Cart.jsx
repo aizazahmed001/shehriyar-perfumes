@@ -20,10 +20,10 @@ const Cart = () => {
     });
     const navigate = useNavigate();
 
-    const handleQuantityChange = (productId, currentQuantity, change) => {
+    const handleQuantityChange = (productId, size, currentQuantity, change) => {
         const newQuantity = currentQuantity + change;
         if (newQuantity > 0) {
-            updateQuantity(productId, newQuantity);
+            updateQuantity(productId, size, newQuantity);
         }
     };
 
@@ -71,26 +71,27 @@ const Cart = () => {
                                         <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-black text-black/40">{item.category}</p>
                                         <h3 className="text-xl md:text-2xl font-serif group-hover:italic transition-all">{item.name}</h3>
                                     </div>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-black/40">{item.size || '100ml'}</p>
                                     <p className="text-lg md:text-xl font-bold tracking-tight">{formatPrice(item.price)}</p>
 
                                     <div className="flex items-center justify-center sm:justify-start gap-6 md:gap-8 pt-2 md:pt-4">
                                         <div className="flex items-center border border-black px-3 py-1.5 md:px-4 md:py-2">
                                             <button
-                                                onClick={() => handleQuantityChange(item._id, item.quantity, -1)}
+                                                onClick={() => handleQuantityChange(item._id, item.size, item.quantity, -1)}
                                                 className="p-1 hover:scale-125 transition"
                                             >
                                                 <Minus className="w-2.5 h-2.5 md:w-3 md:h-3" />
                                             </button>
                                             <span className="px-4 md:px-6 text-xs md:text-sm font-black">{item.quantity}</span>
                                             <button
-                                                onClick={() => handleQuantityChange(item._id, item.quantity, 1)}
+                                                onClick={() => handleQuantityChange(item._id, item.size, item.quantity, 1)}
                                                 className="p-1 hover:scale-125 transition"
                                             >
                                                 <Plus className="w-2.5 h-2.5 md:w-3 md:h-3" />
                                             </button>
                                         </div>
                                         <button
-                                            onClick={() => removeFromCart(item._id)}
+                                            onClick={() => removeFromCart(item._id, item.size)}
                                             className="text-black/20 hover:text-red-600 transition-colors"
                                             title="Remove Fragment"
                                         >

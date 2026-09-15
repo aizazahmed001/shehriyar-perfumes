@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../lib/api';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { Heart, ShoppingBag, Truck, Shield, ArrowLeft, Star, Share2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getLocalProductImage, getProductImage } from '../lib/productMedia';
-import { getDemoProduct } from '../data/demoProducts';
 import { useCurrency } from '../context/CurrencyContext';
 
 const ProductDetail = () => {
@@ -20,24 +19,22 @@ const ProductDetail = () => {
     const navigate = useNavigate();
 
     const [selectedImage, setSelectedImage] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await axios.get(`http://localhost:5001/api/products/${id}`);
+                const res = await api.get(`/products/${id}`);
                 setProduct(res.data);
                 if (res.data.images && res.data.images.length > 0) {
                     setSelectedImage(res.data.images[0]);
                 } else {
                     setSelectedImage(res.data.image);
                 }
+                setSelectedSize(res.data.variants?.[0]?.size || '100ml');
             } catch (err) {
                 console.error("Failed to fetch product", err);
-                const demoProduct = getDemoProduct(id);
-                setProduct(demoProduct || null);
-                if (demoProduct) {
-                    setSelectedImage(demoProduct.images?.[0] || demoProduct.image);
-                }
+                setProduct(null);
             } finally {
                 setLoading(false);
             }
@@ -64,6 +61,8 @@ const ProductDetail = () => {
 
     const inWishlist = isInWishlist(product._id);
     const images = product.images && product.images.length > 0 ? product.images : [product.image];
+    const selectedVariant = product.variants?.find((variant) => variant.size === selectedSize);
+    const selectedPrice = selectedVariant?.price || product.sellPrice || product.price;
 
     return (
         <div className="bg-white min-h-screen pt-28 sm:pt-40 pb-16 sm:pb-20">
@@ -137,7 +136,7 @@ const ProductDetail = () => {
                         </h1>
 
                         <div className="flex items-baseline gap-4 mb-10 md:mb-12">
-                            <span className="text-2xl md:text-3xl font-bold tracking-tight">{formatPrice(product.sellPrice || product.price)}</span>
+                            <span className="text-2xl md:text-3xl font-bold tracking-tight">{formatPrice(selectedPrice)}</span>
                             {product.regularPrice && product.sellPrice && product.regularPrice > product.sellPrice && (
                                 <span className="text-base md:text-lg text-black/20 line-through">{formatPrice(product.regularPrice)}</span>
                             )}
@@ -151,13 +150,17 @@ const ProductDetail = () => {
                         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-12 sm:mb-16">
                             <button
                                 onClick={() => {
-                                    addToCart(product);
+                                    addToCart(product, selectedSize);
                                     toast.success(`${product.name} added to cart!`);
                                 }}
-                                disabled={product.stock === 0}
+                                disabled={product.variants?.length
+                                    ? !product.variants.find((variant) => variant.size === selectedSize)?.stock
+                                    : product.stock === 0}
                                 className="monochrome-btn flex-1 py-4"
                             >
-                                {product.stock === 0 ? 'Out of Archive' : 'Add to Selection'}
+                                {product.variants?.length && !product.variants.find((variant) => variant.size === selectedSize)?.stock
+                                    ? 'Out of Archive'
+                                    : 'Add to Selection'}
                             </button>
                             <button
                                 onClick={handleWishlistClick}
@@ -168,6 +171,23 @@ const ProductDetail = () => {
                             >
                                 <Heart className={`w-5 h-5 ${inWishlist ? 'fill-current' : ''}`} />
                             </button>
+                        </div>
+
+                        <div className="mb-10 md:mb-12">
+                            <p className="mb-4 text-[10px] font-black uppercase tracking-[0.3em] text-black/40">Select size</p>
+                            <div className="flex flex-wrap gap-3">
+                                {(product.variants?.length ? product.variants : [{ size: '100ml', price: product.sellPrice || product.price, stock: product.stock }]).map((variant) => (
+                                    <button
+                                        key={variant.size}
+                                        type="button"
+                                        disabled={variant.stock === 0}
+                                        onClick={() => setSelectedSize(variant.size)}
+                                        className={`border px-5 py-3 text-[10px] font-black uppercase tracking-widest transition-all ${selectedSize === variant.size ? 'border-black bg-black text-white' : 'border-black/10 hover:border-black'} ${variant.stock === 0 ? 'cursor-not-allowed opacity-30 line-through' : ''}`}
+                                    >
+                                        {variant.size}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
 
                         {/* Features */}

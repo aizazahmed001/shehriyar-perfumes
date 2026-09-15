@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../lib/api';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { Plus, Filter, SlidersHorizontal, Heart, Star } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
 import ProductSkeleton from '../components/ProductSkeleton';
 import { getLocalProductImage, getProductImage } from '../lib/productMedia';
-import { demoProducts } from '../data/demoProducts';
 import { useCurrency } from '../context/CurrencyContext';
 
 const Shop = () => {
@@ -38,14 +37,13 @@ const Shop = () => {
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            const res = await axios.get('http://localhost:5001/api/products');
-            const productsData = res.data.length > 0 ? res.data : demoProducts;
-            setProducts(productsData);
-            setFilteredProducts(productsData);
+            const res = await api.get('/products');
+            setProducts(res.data);
+            setFilteredProducts(res.data);
         } catch (err) {
             console.error(err);
-            setProducts(demoProducts);
-            setFilteredProducts(demoProducts);
+            setProducts([]);
+            setFilteredProducts([]);
         } finally {
             setLoading(false);
         }

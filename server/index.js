@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
 const { Server } = require('socket.io');
 require('dotenv').config();
 
@@ -11,20 +14,30 @@ const User = require('./models/User');
 const Cart = require('./models/Cart');
 const Wishlist = require('./models/Wishlist'); // Import Wishlist Model
 const authMiddleware = require('./middleware/auth');
+const optionalAuth = require('./middleware/optionalAuth');
+const adminMiddleware = require('./middleware/admin');
 
 const jwt = require('jsonwebtoken');
 
 const app = express();
 const server = http.createServer(app);
+const uploadDir = path.join(__dirname, 'uploads');
+fs.mkdirSync(uploadDir, { recursive: true });
+const upload = multer({
+    dest: uploadDir,
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, callback) => callback(null, /^image\/(jpeg|png|webp|gif)$/.test(file.mimetype))
+});
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: process.env.CLIENT_URL || true }));
 app.use(express.json());
+app.use('/uploads', express.static(uploadDir));
 
 // Socket.io Setup
 const io = new Server(server, {
     cors: {
-        origin: "*", // Allow all origins for dev simplicity
+        origin: process.env.CLIENT_URL || true,
         methods: ["GET", "POST"]
     }
 });
@@ -36,7 +49,36 @@ io.on('connection', (socket) => {
     });
 });
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/perfume-store';
+if (!process.env.MONGO_URI) {
+    throw new Error('MONGO_URI is required. Configure MongoDB Atlas in server/.env.');
+}
+
+const MONGO_URI = process.env.MONGO_URI;
+
+const normalizeStatus = (status) => String(status || '').toLowerCase();
+const getVariant = (product, size) => {
+    if (product.variants?.length) {
+        return product.variants.find((variant) => variant.size === size);
+    }
+
+    if (size === 'default' || size === '100ml') {
+        return {
+            size: size === 'default' ? '100ml' : size,
+            price: Number(product.sellPrice || product.price) || 0,
+            stock: Number(product.stock) || 0
+        };
+    }
+    return null;
+};
+
+const validateCustomer = ({ customerName, phone, email, city, address }) => {
+    if (!customerName?.trim() || !phone?.trim() || !city?.trim() || !address?.trim()) {
+        return 'Full name, phone, city, and complete address are required';
+    }
+    if (!/^\+?[0-9\s()-]{7,20}$/.test(phone.trim())) return 'Enter a valid phone number';
+    if (email && !/^\S+@\S+\.\S+$/.test(email.trim())) return 'Enter a valid email address';
+    return null;
+};
 
 // Database Connection
 const connectToDatabase = async () => {
@@ -57,6 +99,10 @@ const connectToDatabase = async () => {
 app.post('/api/auth/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;
+
+        if (!name?.trim() || !/^\S+@\S+\.\S+$/.test(email || '') || !password || password.length < 8) {
+            return res.status(400).json({ error: 'Name, valid email, and password of at least 8 characters are required' });
+        }
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -154,14 +200,20 @@ app.get('/api/cart', authMiddleware, async (req, res) => {
 // Add to Cart
 app.post('/api/cart', authMiddleware, async (req, res) => {
     try {
-        const { productId, quantity = 1 } = req.body;
+        const { productId, quantity = 1, size = 'default' } = req.body;
+        if (!mongoose.isValidObjectId(productId) || !Number.isInteger(quantity) || quantity < 1) {
+            return res.status(400).json({ error: 'Invalid product, size, or quantity' });
+        }
+        const product = await Product.findById(productId);
+        if (!product || !product.active) return res.status(404).json({ error: 'Product not found' });
+        if (!getVariant(product, size)) return res.status(400).json({ error: 'Selected size is unavailable' });
 
         let cart = await Cart.findOne({ user: req.user._id });
         if (!cart) {
             cart = new Cart({ user: req.user._id, items: [] });
         }
 
-        const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
+        const itemIndex = cart.items.findIndex(item => item.product.toString() === productId && item.size === size);
 
         if (itemIndex > -1) {
             cart.items[itemIndex].quantity += quantity;
@@ -179,14 +231,14 @@ app.post('/api/cart', authMiddleware, async (req, res) => {
 });
 
 // Update Cart Item Quantity
-app.put('/api/cart/:productId', authMiddleware, async (req, res) => {
+app.put('/api/cart/:productId/:size', authMiddleware, async (req, res) => {
     try {
         const { quantity } = req.body;
         const cart = await Cart.findOne({ user: req.user._id });
 
         if (!cart) return res.status(404).json({ error: 'Cart not found' });
 
-        const itemIndex = cart.items.findIndex(item => item.product.toString() === req.params.productId);
+        const itemIndex = cart.items.findIndex(item => item.product.toString() === req.params.productId && item.size === req.params.size);
 
         if (itemIndex > -1) {
             if (quantity > 0) {
@@ -206,12 +258,12 @@ app.put('/api/cart/:productId', authMiddleware, async (req, res) => {
 });
 
 // Remove Item from Cart
-app.delete('/api/cart/:productId', authMiddleware, async (req, res) => {
+app.delete('/api/cart/:productId/:size', authMiddleware, async (req, res) => {
     try {
         const cart = await Cart.findOne({ user: req.user._id });
         if (!cart) return res.status(404).json({ error: 'Cart not found' });
 
-        cart.items = cart.items.filter(item => item.product.toString() !== req.params.productId);
+        cart.items = cart.items.filter(item => !(item.product.toString() === req.params.productId && item.size === req.params.size));
         await cart.save();
 
         const updatedCart = await Cart.findById(cart._id).populate('items.product');
@@ -288,9 +340,11 @@ app.delete('/api/wishlist/:productId', authMiddleware, async (req, res) => {
 // ============ PRODUCT ROUTES ============
 
 // Get All Products
-app.get('/api/products', async (req, res) => {
+app.get('/api/products', optionalAuth, async (req, res) => {
     try {
-        const products = await Product.find();
+        const includeInactive = req.query.includeInactive === 'true' && req.user?.role === 'admin';
+        const filter = includeInactive ? {} : { active: { $ne: false } };
+        const products = await Product.find(filter).sort({ featured: -1, createdAt: -1 });
         res.json(products);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -301,15 +355,20 @@ app.get('/api/products', async (req, res) => {
 app.get('/api/products/:id', async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).json({ error: 'Product not found' });
+        if (!product || product.active === false) return res.status(404).json({ error: 'Product not found' });
         res.json(product);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
+app.post('/api/uploads', adminMiddleware, upload.single('image'), (req, res) => {
+    if (!req.file) return res.status(400).json({ error: 'A valid image file is required' });
+    res.status(201).json({ url: `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` });
+});
+
 // Add Product (Seed or Admin)
-app.post('/api/products', async (req, res) => {
+app.post('/api/products', adminMiddleware, async (req, res) => {
     try {
         const newProduct = new Product(req.body);
         const savedProduct = await newProduct.save();
@@ -321,14 +380,46 @@ app.post('/api/products', async (req, res) => {
 });
 
 // Create Order
-app.post('/api/orders', authMiddleware, async (req, res) => {
+app.post('/api/orders', optionalAuth, async (req, res) => {
     try {
-        const orderData = {
-            ...req.body,
-            user: req.user._id // Force user ID from auth token
-        };
+        const { customerName, phone, email = '', city, address, products = [], paymentMethod = 'cod' } = req.body;
+        const customerError = validateCustomer({ customerName, phone, email, city, address });
+        if (customerError) return res.status(400).json({ error: customerError });
+        if (paymentMethod !== 'cod') return res.status(400).json({ error: 'Only Cash on Delivery is available' });
+        if (!Array.isArray(products) || products.length === 0) return res.status(400).json({ error: 'Your cart is empty' });
+
+        const orderProducts = [];
+        let subtotal = 0;
+        for (const item of products) {
+            if (!mongoose.isValidObjectId(item.productId) || !Number.isInteger(item.quantity) || item.quantity < 1) {
+                return res.status(400).json({ error: 'Invalid product or quantity' });
+            }
+            const product = await Product.findById(item.productId);
+            const variant = product && getVariant(product, item.size);
+            if (!product || product.active === false || !variant) return res.status(400).json({ error: 'A selected product or size is unavailable' });
+            if (variant.stock < item.quantity) return res.status(400).json({ error: `${product.name} (${variant.size}) is out of stock` });
+            subtotal += variant.price * item.quantity;
+            orderProducts.push({ productId: product._id, size: variant.size, quantity: item.quantity, price: variant.price });
+        }
+
+        const deliveryFee = 0;
+        const gst = Math.round(subtotal * 0.18);
+        const totalAmount = subtotal + gst + deliveryFee;
+        const orderData = { customerName: customerName.trim(), phone: phone.trim(), email: email.trim(), city: city.trim(), address: address.trim(), products: orderProducts, subtotal, gst, deliveryFee, totalAmount, paymentMethod, status: 'pending', user: req.user?._id || null };
         const newOrder = new Order(orderData);
         const savedOrder = await newOrder.save();
+
+        for (const item of orderProducts) {
+            const product = await Product.findById(item.productId);
+            const variant = getVariant(product, item.size);
+            if (product.variants?.length) {
+                variant.stock -= item.quantity;
+                await product.save();
+            } else {
+                product.stock -= item.quantity;
+                await product.save();
+            }
+        }
 
         // Notify admin/users via Socket.io
         io.emit('newResults', { message: 'New Order Placed!', order: savedOrder });
@@ -341,7 +432,7 @@ app.post('/api/orders', authMiddleware, async (req, res) => {
 });
 
 // Bulk Delete Orders (Admin)
-app.post('/api/admin/orders/bulk-delete', async (req, res) => {
+app.post('/api/admin/orders/bulk-delete', adminMiddleware, async (req, res) => {
     try {
         const { orderIds } = req.body;
         if (!orderIds || !Array.isArray(orderIds)) {
@@ -367,10 +458,38 @@ app.get('/api/orders', authMiddleware, async (req, res) => {
 
 
 // Get All Orders (Admin)
-app.get('/api/admin/orders', async (req, res) => {
+app.get('/api/admin/orders', adminMiddleware, async (req, res) => {
     try {
         const orders = await Order.find().sort({ createdAt: -1 }).populate('products.productId').populate('user', 'name email');
         res.json(orders);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/api/admin/stats', adminMiddleware, async (req, res) => {
+    try {
+        const [totalProducts, orders] = await Promise.all([
+            Product.countDocuments(),
+            Order.find().select('status totalAmount customerName createdAt').sort({ createdAt: -1 })
+        ]);
+        res.json({
+            totalProducts,
+            totalOrders: orders.length,
+            pendingOrders: orders.filter((order) => normalizeStatus(order.status) === 'pending').length,
+            deliveredOrders: orders.filter((order) => normalizeStatus(order.status) === 'delivered').length,
+            totalRevenue: orders.filter((order) => normalizeStatus(order.status) !== 'cancelled').reduce((sum, order) => sum + (order.totalAmount || 0), 0),
+            recentOrders: orders.slice(0, 8)
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/api/admin/customers', adminMiddleware, async (req, res) => {
+    try {
+        const customers = await User.find({ role: 'customer' }).select('-password').sort({ createdAt: -1 });
+        res.json(customers);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -382,11 +501,11 @@ app.put('/api/orders/:id/cancel', authMiddleware, async (req, res) => {
         const order = await Order.findOne({ _id: req.params.id, user: req.user._id });
         if (!order) return res.status(404).json({ error: 'Order not found' });
 
-        if (order.status !== 'Pending') {
+        if (normalizeStatus(order.status) !== 'pending') {
             return res.status(400).json({ error: 'Order cannot be cancelled' });
         }
 
-        order.status = 'Cancelled';
+        order.status = 'cancelled';
         await order.save();
         io.emit('orderUpdate', order);
         res.json(order);
@@ -396,11 +515,14 @@ app.put('/api/orders/:id/cancel', authMiddleware, async (req, res) => {
 });
 
 // Update Order Status
-app.put('/api/orders/:id', async (req, res) => {
+app.put('/api/orders/:id', adminMiddleware, async (req, res) => {
     try {
+        const allowedStatuses = ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
+        const status = normalizeStatus(req.body.status);
+        if (!allowedStatuses.includes(status)) return res.status(400).json({ error: 'Invalid order status' });
         const updatedOrder = await Order.findByIdAndUpdate(
             req.params.id,
-            { status: req.body.status },
+            { status },
             { new: true }
         );
         io.emit('orderUpdate', updatedOrder); // Notify clients
@@ -411,7 +533,7 @@ app.put('/api/orders/:id', async (req, res) => {
 });
 
 // Delete Order (Admin)
-app.delete('/api/orders/:id', async (req, res) => {
+app.delete('/api/orders/:id', adminMiddleware, async (req, res) => {
     try {
         await Order.findByIdAndDelete(req.params.id);
         res.json({ message: 'Order deleted successfully' });
@@ -421,7 +543,7 @@ app.delete('/api/orders/:id', async (req, res) => {
 });
 
 // Update Product
-app.put('/api/products/:id', async (req, res) => {
+app.put('/api/products/:id', adminMiddleware, async (req, res) => {
     try {
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json(updatedProduct);
@@ -431,7 +553,7 @@ app.put('/api/products/:id', async (req, res) => {
 });
 
 // Delete Product
-app.delete('/api/products/:id', async (req, res) => {
+app.delete('/api/products/:id', adminMiddleware, async (req, res) => {
     try {
         await Product.findByIdAndDelete(req.params.id);
         res.json({ message: 'Product deleted' });
@@ -441,7 +563,7 @@ app.delete('/api/products/:id', async (req, res) => {
 });
 
 // Seed Route (Optional, for quick setup)
-app.get('/api/seed', async (req, res) => {
+app.get('/api/seed', adminMiddleware, async (req, res) => {
     try {
         const count = await Product.countDocuments();
         if (count > 0) return res.json({ message: 'Products already exist' });

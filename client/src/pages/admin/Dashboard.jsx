@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api, { withAuth } from '../../lib/api';
 import { TrendingUp, Users, DollarSign, ShoppingBag } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { io } from 'socket.io-client';
 import { useCurrency } from '../../context/CurrencyContext';
-
-const socket = io('http://localhost:5001');
+import { useAuth } from '../../context/AuthContext';
+import socket from '../../lib/socket';
 
 const AdminDashboard = () => {
     const { formatPrice } = useCurrency();
+    const { token } = useAuth();
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalSales: 0,
         totalOrders: 0,
         totalProducts: 0,
+        pendingOrders: 0,
+        deliveredOrders: 0,
         recentOrders: [],
         recentProducts: []
     });
@@ -22,18 +24,18 @@ const AdminDashboard = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const [productsRes, ordersRes] = await Promise.all([
-                    axios.get('http://localhost:5001/api/products'),
-                    axios.get('http://localhost:5001/api/admin/orders')
+                const [productsRes, statsRes] = await Promise.all([
+                    api.get('/products?includeInactive=true', withAuth(token)),
+                    api.get('/admin/stats', withAuth(token))
                 ]);
 
-                const totalSales = ordersRes.data.reduce((acc, order) => acc + order.totalAmount, 0);
-
                 setStats({
-                    totalSales,
-                    totalOrders: ordersRes.data.length,
+                    totalSales: statsRes.data.totalRevenue,
+                    totalOrders: statsRes.data.totalOrders,
                     totalProducts: productsRes.data.length,
-                    recentOrders: ordersRes.data.slice(0, 5),
+                    pendingOrders: statsRes.data.pendingOrders,
+                    deliveredOrders: statsRes.data.deliveredOrders,
+                    recentOrders: statsRes.data.recentOrders,
                     recentProducts: productsRes.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5)
                 });
             } catch (err) {
@@ -91,7 +93,8 @@ const AdminDashboard = () => {
                     { label: 'Total Revenue', value: formatPrice(stats.totalSales), icon: DollarSign },
                     { label: 'Total Orders', value: stats.totalOrders, icon: ShoppingBag },
                     { label: 'Total Products', value: stats.totalProducts, icon: TrendingUp },
-                    { label: 'Active Users', value: '126', icon: Users }
+                    { label: 'Pending Orders', value: stats.pendingOrders, icon: ShoppingBag },
+                    { label: 'Delivered Orders', value: stats.deliveredOrders, icon: ShoppingBag }
                 ].map((stat, i) => (
                     <div key={i} className="bg-white p-8 border border-black/5 hover:border-black transition-all">
                         <div className="flex flex-col gap-6">

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api, { withAuth } from '../lib/api';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,9 +23,7 @@ export const WishlistProvider = ({ children }) => {
     const fetchWishlist = async () => {
         try {
             const storedToken = token || localStorage.getItem('token');
-            const res = await axios.get('http://localhost:5001/api/wishlist', {
-                headers: { Authorization: `Bearer ${storedToken}` }
-            });
+            const res = await api.get('/wishlist', withAuth(storedToken));
             if (res.data && res.data.products) {
                 setWishlist(res.data.products);
             }
@@ -42,9 +40,9 @@ export const WishlistProvider = ({ children }) => {
 
         try {
             const storedToken = token || localStorage.getItem('token');
-            await axios.post(`http://localhost:5001/api/wishlist/${product._id}`,
+            await api.post(`/wishlist/${product._id}`,
                 {},
-                { headers: { Authorization: `Bearer ${storedToken}` } }
+                withAuth(storedToken)
             );
             await fetchWishlist();
             alert("Added to Wishlist!");
@@ -57,9 +55,7 @@ export const WishlistProvider = ({ children }) => {
     const removeFromWishlist = async (productId) => {
         try {
             const storedToken = token || localStorage.getItem('token');
-            await axios.delete(`http://localhost:5001/api/wishlist/${productId}`, {
-                headers: { Authorization: `Bearer ${storedToken}` }
-            });
+            await api.delete(`/wishlist/${productId}`, withAuth(storedToken));
             await fetchWishlist();
         } catch (err) {
             console.error("Error removing from wishlist", err);

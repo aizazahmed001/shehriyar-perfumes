@@ -17,6 +17,11 @@ const CartSchema = new mongoose.Schema({
                 type: Number,
                 default: 1,
                 min: 1
+            },
+            size: {
+                type: String,
+                enum: ['30ml', '50ml', '75ml', '100ml', 'default'],
+                default: 'default'
             }
         }
     ]

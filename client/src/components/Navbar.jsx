@@ -5,8 +5,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import AuthModal from './AuthModal';
 import UserAvatar from './UserAvatar';
-import axios from 'axios';
-import { demoProducts } from '../data/demoProducts';
+import api from '../lib/api';
 import { useCurrency } from '../context/CurrencyContext';
 
 const Navbar = () => {
@@ -32,13 +31,13 @@ const Navbar = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await axios.get('http://localhost:5001/api/products');
+            const res = await api.get('/products');
             if (Array.isArray(res.data)) {
-                setAllProducts(res.data.length > 0 ? res.data : demoProducts);
+                setAllProducts(res.data);
             }
         } catch (err) {
             console.error("Failed to fetch products for search", err);
-            setAllProducts(demoProducts);
+            setAllProducts([]);
         }
     };
 

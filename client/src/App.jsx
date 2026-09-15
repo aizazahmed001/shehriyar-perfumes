@@ -12,6 +12,8 @@ import AdminLayout from './components/AdminLayout';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminProducts from './pages/admin/ProductManager';
 import AdminOrders from './pages/admin/OrderManager';
+import AdminCustomers from './pages/admin/Customers';
+import AdminSettings from './pages/admin/Settings';
 import HelpCenter from './pages/HelpCenter';
 import ShippingReturns from './pages/ShippingReturns';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -68,16 +70,8 @@ function AppContent() {
         <Route path="/terms-conditions" element={<><Navbar /><TermsConditions /></>} />
 
         {/* Protected Routes */}
-        <Route path="/cart" element={
-          <ProtectedRoute>
-            <Navbar /><Cart />
-          </ProtectedRoute>
-        } />
-        <Route path="/checkout" element={
-          <ProtectedRoute>
-            <Navbar /><Checkout />
-          </ProtectedRoute>
-        } />
+        <Route path="/cart" element={<><Navbar /><Cart /></>} />
+        <Route path="/checkout" element={<><Navbar /><Checkout /></>} />
         <Route path="/orders" element={
           <ProtectedRoute>
             <Navbar /><Orders />
@@ -98,6 +92,8 @@ function AppContent() {
           <Route index element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="orders" element={<AdminOrders />} />
+          <Route path="customers" element={<AdminCustomers />} />
+          <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Routes>
       {!isAdminRoute && <Footer />}

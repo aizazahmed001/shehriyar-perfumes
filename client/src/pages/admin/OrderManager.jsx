@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api, { withAuth } from '../../lib/api';
 import { Package, ChevronDown, Trash2, CheckCircle2, Clock, Truck, ShieldCheck } from 'lucide-react';
 import socket from '../../lib/socket';
 import { useCurrency } from '../../context/CurrencyContext';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminOrders = () => {
     const { formatPrice } = useCurrency();
+    const { token } = useAuth();
     const [orders, setOrders] = useState([]);
     const [selectedOrders, setSelectedOrders] = useState([]);
+    const [search, setSearch] = useState('');
+    const [statusFilter, setStatusFilter] = useState('all');
+    const [detailsOrder, setDetailsOrder] = useState(null);
 
     useEffect(() => {
         fetchOrders();
@@ -22,23 +27,23 @@ const AdminOrders = () => {
         };
     }, []);
 
-    const fetchOrders = async () => {
+    async function fetchOrders() {
         try {
-            const res = await axios.get('http://localhost:5001/api/admin/orders');
+            const res = await api.get('/admin/orders', withAuth(token));
             setOrders(res.data);
         } catch (err) {
             console.error('Failed to fetch orders:', err);
         }
-    };
+    }
 
     const handleStatusUpdate = async (id, newStatus) => {
-        await axios.put(`http://localhost:5001/api/orders/${id}`, { status: newStatus });
+        await api.put(`/orders/${id}`, { status: newStatus }, withAuth(token));
     };
 
     const handleDeleteOrder = async (id) => {
         if (!window.confirm('Erase this transaction from history?')) return;
         try {
-            await axios.delete(`http://localhost:5001/api/orders/${id}`);
+            await api.delete(`/orders/${id}`, withAuth(token));
             setOrders(prev => prev.filter(order => order._id !== id));
         } catch (err) {
             console.error('Failed to delete order:', err);
@@ -62,7 +67,7 @@ const AdminOrders = () => {
     const handleBulkDelete = async () => {
         if (!window.confirm(`Erase ${selectedOrders.length} records from archive?`)) return;
         try {
-            await axios.post('http://localhost:5001/api/admin/orders/bulk-delete', { orderIds: selectedOrders });
+            await api.post('/admin/orders/bulk-delete', { orderIds: selectedOrders }, withAuth(token));
             setOrders(prev => prev.filter(o => !selectedOrders.includes(o._id)));
             setSelectedOrders([]);
         } catch (err) {
@@ -71,11 +76,11 @@ const AdminOrders = () => {
     };
 
     const getStatusIcon = (status) => {
-        switch (status) {
-            case 'Pending': return <Clock className="w-3 h-3" />;
-            case 'Processing': return <ShieldCheck className="w-3 h-3" />;
-            case 'Shipped': return <Truck className="w-3 h-3" />;
-            case 'Delivered': return <CheckCircle2 className="w-3 h-3" />;
+        switch (String(status).toLowerCase()) {
+            case 'pending': return <Clock className="w-3 h-3" />;
+            case 'processing': return <ShieldCheck className="w-3 h-3" />;
+            case 'shipped': return <Truck className="w-3 h-3" />;
+            case 'delivered': return <CheckCircle2 className="w-3 h-3" />;
             default: return <Package className="w-3 h-3" />;
         }
     };
@@ -98,6 +103,14 @@ const AdminOrders = () => {
                 )}
             </div>
 
+            <div className="mb-8 flex flex-col gap-4 sm:flex-row">
+                <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search customer, email, or order ID..." className="flex-1 border border-black/15 px-4 py-3 text-sm outline-none focus:border-black" />
+                <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="border border-black/15 bg-white px-4 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:border-black">
+                    <option value="all">All statuses</option>
+                    {['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'].map((status) => <option key={status} value={status}>{status}</option>)}
+                </select>
+            </div>
+
             {orders.length > 0 && (
                 <div className="bg-white p-6 border border-black/5 mb-8 flex items-center gap-4">
                     <input
@@ -111,7 +124,11 @@ const AdminOrders = () => {
             )}
 
             <div className="space-y-8">
-                {orders.map((order) => (
+                {orders.filter((order) => {
+                    const query = search.toLowerCase();
+                    const matchesSearch = !query || [order._id, order.customerName, order.email, order.phone].some((value) => String(value || '').toLowerCase().includes(query));
+                    return matchesSearch && (statusFilter === 'all' || String(order.status).toLowerCase() === statusFilter);
+                }).map((order) => (
                     <div key={order._id} className={`bg-white border transition-all duration-500 overflow-hidden ${selectedOrders.includes(order._id) ? 'border-black shadow-2xl scale-[1.01]' : 'border-black/5 shadow-sm'}`}>
                         <div className="flex flex-col md:flex-row justify-between md:items-center p-8 border-b border-black/5">
                             <div className="flex items-start gap-6">
@@ -136,14 +153,16 @@ const AdminOrders = () => {
                                 <span className="text-xl font-black italic tracking-tighter italic">{formatPrice(order.totalAmount)}</span>
                                 <div className="relative group">
                                     <select
-                                        value={order.status}
+                                        value={String(order.status).toLowerCase()}
                                         onChange={(e) => handleStatusUpdate(order._id, e.target.value)}
                                         className="appearance-none bg-black/5 border border-black/5 text-[10px] font-black uppercase tracking-widest py-2 pl-4 pr-10 outline-none focus:border-black/20 cursor-pointer"
                                     >
-                                        <option value="Pending">Pending</option>
-                                        <option value="Processing">Processing</option>
-                                        <option value="Shipped">Shipped</option>
-                                        <option value="Delivered">Delivered</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="confirmed">Confirmed</option>
+                                        <option value="processing">Processing</option>
+                                        <option value="shipped">Shipped</option>
+                                        <option value="delivered">Delivered</option>
+                                        <option value="cancelled">Cancelled</option>
                                     </select>
                                     <ChevronDown className="w-3 h-3 text-black absolute right-3 top-3 pointer-events-none opacity-40" />
                                 </div>
@@ -179,11 +198,25 @@ const AdminOrders = () => {
                         </div>
                         <div className="p-8 pt-0 flex justify-between items-center text-[9px] font-black uppercase tracking-widest text-black/40">
                             <p className="max-w-md truncate">Deliverance Conduit: {order.address}</p>
-                            <p className="italic underline">View Transaction Receipt</p>
+                            <button type="button" onClick={() => setDetailsOrder(order)} className="italic underline">View Transaction Details</button>
                         </div>
                     </div>
                 ))}
             </div>
+
+            {detailsOrder && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4" onClick={() => setDetailsOrder(null)}>
+                    <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto bg-white p-6 sm:p-10" onClick={(event) => event.stopPropagation()}>
+                        <div className="mb-8 flex items-start justify-between gap-6 border-b border-black/5 pb-6">
+                            <div><p className="text-[9px] font-black uppercase tracking-widest text-black/40">Order details</p><h2 className="mt-2 font-serif text-3xl">{detailsOrder.customerName}</h2></div>
+                            <button type="button" onClick={() => setDetailsOrder(null)} className="text-black/30 hover:text-black">Close</button>
+                        </div>
+                        <div className="grid gap-4 text-sm sm:grid-cols-2"><p><strong>Phone:</strong> {detailsOrder.phone}</p><p><strong>Email:</strong> {detailsOrder.email || 'Not provided'}</p><p><strong>City:</strong> {detailsOrder.city}</p><p><strong>Status:</strong> {detailsOrder.status}</p><p className="sm:col-span-2"><strong>Address:</strong> {detailsOrder.address}</p></div>
+                        <div className="mt-8 space-y-3 border-t border-black/5 pt-6">{detailsOrder.products?.map((item, index) => <div key={index} className="flex justify-between gap-4 text-sm"><span>{item.productId?.name || 'Product'} / {item.size} x {item.quantity}</span><span>{formatPrice(item.price * item.quantity)}</span></div>)}</div>
+                        <div className="mt-8 border-t border-black/5 pt-6 text-right font-serif text-2xl">{formatPrice(detailsOrder.totalAmount)}</div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

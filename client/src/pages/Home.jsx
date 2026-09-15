@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+import api from '../lib/api';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 import {
@@ -9,7 +9,6 @@ import {
 import socket from '../lib/socket';
 import ProductSkeleton from '../components/ProductSkeleton';
 import { getLocalProductImage, getProductImage } from '../lib/productMedia';
-import { demoProducts } from '../data/demoProducts';
 import { useCurrency } from '../context/CurrencyContext';
 import './Home.css';
 
@@ -44,15 +43,11 @@ const Home = () => {
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            const res = await axios.get('http://localhost:5001/api/products');
-            if (res.data && res.data.length === 0) {
-                setProducts(demoProducts);
-            } else {
-                setProducts(res.data);
-            }
+            const res = await api.get('/products');
+            setProducts(res.data);
         } catch (err) {
             console.error(err);
-            setProducts(demoProducts);
+            setProducts([]);
         } finally {
             setLoading(false);
         }

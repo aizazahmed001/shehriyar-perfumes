@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api, { withAuth } from '../lib/api';
 import { useNavigate } from 'react-router-dom';
 import socket from '../lib/socket';
 import { Package, Clock, XCircle, CheckCircle } from 'lucide-react';
@@ -38,9 +38,7 @@ const Orders = () => {
     const fetchOrders = async () => {
         try {
             setLoading(true);
-            const res = await axios.get('http://localhost:5001/api/orders', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const res = await api.get('/orders', withAuth(token));
             setOrders(res.data);
         } catch (err) {
             console.error('Failed to fetch orders:', err);
@@ -52,9 +50,7 @@ const Orders = () => {
     const handleCancelOrder = async (orderId) => {
         if (!window.confirm("Abort this transmission?")) return;
         try {
-            await axios.put(`http://localhost:5001/api/orders/${orderId}/cancel`, {}, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await api.put(`/orders/${orderId}/cancel`, {}, withAuth(token));
             fetchOrders();
         } catch (err) {
             console.error(err);
@@ -82,11 +78,11 @@ const Orders = () => {
                                 <div className="flex flex-wrap items-center gap-3 sm:gap-6">
                                     <div className="opacity-20"><Package className="w-5 h-5" /></div>
                                     <span className="text-[10px] font-black uppercase tracking-[0.2em]">Transaction #{order._id.slice(-6).toUpperCase()}</span>
-                                    <span className={`px-4 py-1 text-[8px] font-black uppercase tracking-[0.2em] border ${order.status === 'Pending' ? 'border-black/10 text-black/40' :
-                                        order.status === 'Cancelled' ? 'border-red-100 text-red-600' :
+                                    <span className={`px-4 py-1 text-[8px] font-black uppercase tracking-[0.2em] border ${String(order.status).toLowerCase() === 'pending' ? 'border-black/10 text-black/40' :
+                                        String(order.status).toLowerCase() === 'cancelled' ? 'border-red-100 text-red-600' :
                                             'border-black text-black'
                                         }`}>
-                                        {order.status}
+                                            {String(order.status).toLowerCase()}
                                     </span>
                                 </div>
                                 
@@ -115,12 +111,12 @@ const Orders = () => {
                                     <span className="block text-3xl font-bold tracking-tighter">{formatPrice(order.totalAmount)}</span>
                                     <span className="text-[8px] text-black/20 font-black uppercase tracking-[0.3em] font-bold mt-1 block">Prot: {order.paymentMethod === 'cod' ? 'Deferred' : 'Digital'}</span>
                                 </div>
-                                {order.status === 'Pending' && (
-                                    <button
+                                {String(order.status).toLowerCase() === 'pending' && (
+                                        <button
                                         onClick={() => handleCancelOrder(order._id)}
                                         className="text-[10px] font-black uppercase tracking-[0.2em] text-red-600/40 hover:text-red-600 transition-colors"
                                     >
-                                        Abort Order
+                                            Abort Order
                                     </button>
                                 )}
                             </div>

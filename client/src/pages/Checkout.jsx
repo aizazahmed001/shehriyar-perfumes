@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import api, { withAuth } from '../lib/api';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, Banknote, ShoppingBag, Truck, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useCurrency } from '../context/CurrencyContext';
 
 const Checkout = () => {
-    const { cart, cartTotal, clearCart } = useCart();
+    const { cart, clearCart } = useCart();
     const { user, token } = useAuth();
     const { formatPrice } = useCurrency();
     const navigate = useNavigate();
-    const [address, setAddress] = useState(user?.address || '');
+    const [customer, setCustomer] = useState({
+        name: user?.name || '',
+        phone: user?.phone || '',
+        email: user?.email || '',
+        city: '',
+        address: user?.address || ''
+    });
     const [loading, setLoading] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('cod');
 
@@ -33,25 +39,20 @@ const Checkout = () => {
         setLoading(true);
         try {
             const orderData = {
-                user: user.id || user._id,
-                customerName: user.name,
-                email: user.email,
-                address: address,
+                customerName: customer.name,
+                phone: customer.phone,
+                email: customer.email,
+                city: customer.city,
+                address: customer.address,
                 products: cart.map(item => ({
                     productId: item._id,
                     quantity: item.quantity,
-                    price: parseCurrency(item.price)
+                    size: item.size || 'default'
                 })),
-                subtotal: subtotal,
-                gst: gstAmount,
-                totalAmount: grandTotal,
-                paymentMethod: paymentMethod,
-                status: 'Pending'
+                paymentMethod
             };
 
-            await axios.post('http://localhost:5001/api/orders', orderData, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await api.post('/orders', orderData, withAuth(token));
 
             await clearCart();
             toast.success("Reception Confirmed. Your order is placed.", {
@@ -65,7 +66,7 @@ const Checkout = () => {
                     letterSpacing: '0.2em'
                 }
             });
-            navigate('/orders');
+            navigate(token ? '/orders' : '/');
         } catch (err) {
             console.error(err);
             toast.error(err.response?.data?.error || 'Transmission failed. Try again.');
@@ -116,26 +117,47 @@ const Checkout = () => {
                                     <label className="text-[10px] uppercase tracking-widest font-black text-black/40 ml-1">Recipient</label>
                                     <input
                                         type="text"
-                                        value={user?.name}
-                                        disabled
-                                        className="w-full px-4 py-3 border-b border-black/5 bg-transparent text-black/40 font-medium text-sm outline-none cursor-not-allowed"
+                                        value={customer.name}
+                                        required
+                                        onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
+                                        className="w-full px-4 py-3 border-b border-black/5 bg-transparent text-black font-medium text-sm outline-none"
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] uppercase tracking-widest font-black text-black/40 ml-1">Contact Email</label>
+                                    <label className="text-[10px] uppercase tracking-widest font-black text-black/40 ml-1">Phone Number</label>
+                                    <input
+                                        type="tel"
+                                        required
+                                        value={customer.phone}
+                                        onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
+                                        className="w-full px-4 py-3 border-b border-black/5 bg-transparent text-black font-medium text-sm outline-none"
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] uppercase tracking-widest font-black text-black/40 ml-1">Email (Optional)</label>
                                     <input
                                         type="email"
-                                        value={user?.email}
-                                        disabled
-                                        className="w-full px-4 py-3 border-b border-black/5 bg-transparent text-black/40 font-medium text-sm outline-none cursor-not-allowed"
+                                        value={customer.email}
+                                        onChange={(e) => setCustomer({ ...customer, email: e.target.value })}
+                                        className="w-full px-4 py-3 border-b border-black/5 bg-transparent text-black font-medium text-sm outline-none"
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] uppercase tracking-widest font-black text-black/40 ml-1">City</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={customer.city}
+                                        onChange={(e) => setCustomer({ ...customer, city: e.target.value })}
+                                        className="w-full px-4 py-3 border-b border-black/5 bg-transparent text-black font-medium text-sm outline-none"
                                     />
                                 </div>
                                 <div className="md:col-span-2 space-y-1">
-                                    <label className="text-[10px] uppercase tracking-widest font-black text-black/40 ml-1">Archive Location (Shipping Address)</label>
+                                    <label className="text-[10px] uppercase tracking-widest font-black text-black/40 ml-1">Complete Shipping Address</label>
                                     <textarea
                                         required
-                                        value={address}
-                                        onChange={(e) => setAddress(e.target.value)}
+                                        value={customer.address}
+                                        onChange={(e) => setCustomer({ ...customer, address: e.target.value })}
                                         className="w-full px-4 py-3 border-b border-black/5 focus:border-black bg-transparent text-black font-medium text-sm outline-none transition-all placeholder:text-black/10"
                                         rows="3"
                                         placeholder="Full address, City, State, Zip"
@@ -245,7 +267,7 @@ const Checkout = () => {
                             <div className="pt-4">
                                 <button
                                     onClick={handlePlaceOrder}
-                                    disabled={loading || !address.trim()}
+                                    disabled={loading}
                                     className="monochrome-btn w-full"
                                 >
                                     {loading ? 'Transmitting...' : `Place Order`}

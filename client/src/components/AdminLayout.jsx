@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingCart, LogOut, Menu, X, ArrowLeft } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, Users, Settings, LogOut, Menu, X, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -75,6 +75,14 @@ const AdminLayout = () => {
                     >
                         <ShoppingCart className="w-4 h-4" />
                         <span className="text-[10px] uppercase tracking-widest">Transactions</span>
+                    </NavLink>
+                    <NavLink to="/admin/customers" onClick={() => setShowMobileMenu(false)} className={({ isActive }) => `flex items-center space-x-4 px-6 py-4 transition-all duration-300 ${isActive ? 'bg-white text-black font-black italic' : 'text-white/40 hover:text-white hover:bg-white/5'}`}>
+                        <Users className="w-4 h-4" />
+                        <span className="text-[10px] uppercase tracking-widest">Customers</span>
+                    </NavLink>
+                    <NavLink to="/admin/settings" onClick={() => setShowMobileMenu(false)} className={({ isActive }) => `flex items-center space-x-4 px-6 py-4 transition-all duration-300 ${isActive ? 'bg-white text-black font-black italic' : 'text-white/40 hover:text-white hover:bg-white/5'}`}>
+                        <Settings className="w-4 h-4" />
+                        <span className="text-[10px] uppercase tracking-widest">Settings</span>
                     </NavLink>
                 </nav>
 
