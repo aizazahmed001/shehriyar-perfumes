@@ -16,10 +16,10 @@ const Footer = () => {
                             Elevating the essence of identity through artisanal fragrances. Experience the peak of olfactory luxury.
                         </p>
                         <div className="flex items-center space-x-6">
-                            <a href="https://www.instagram.com/" className="text-gray-500 hover:text-white transition-all duration-300">
+                            <a href="https://www.instagram.com/shehryar_perfume?stkn=MTZlMmV3dzc0NTgxag==" className="text-gray-500 hover:text-white transition-all duration-300">
                                 <Instagram className="w-5 h-5" aria-label="Instagram" />
                             </a>
-                            <a href="https://www.tiktok.com/" className="text-gray-500 hover:text-white transition-all duration-300" aria-label="TikTok">
+                            <a href="https://www.tiktok.com/@shehryarperfum?_r=1&_t=ZS-99k8aEjeV7N" className="text-gray-500 hover:text-white transition-all duration-300" aria-label="TikTok">
                                 <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
                                     <path d="M15.5 3c.4 2.2 1.7 3.7 3.8 4.1v3.1c-1.5-.1-2.8-.6-3.8-1.4v6.4c0 4.1-2.8 6.8-6.6 6.8-3.5 0-5.9-2.4-5.9-5.6 0-3.5 2.8-5.9 6.7-5.9.3 0 .6 0 .9.1v3.2c-.3-.1-.6-.1-.9-.1-1.7 0-2.9 1-2.9 2.6 0 1.3.9 2.5 2.3 2.5 1.6 0 2.7-1.2 2.7-3.7V3h3.7Z" />
                                 </svg>
