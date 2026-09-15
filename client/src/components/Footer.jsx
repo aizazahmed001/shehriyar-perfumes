@@ -43,6 +43,11 @@ const Footer = () => {
                                 </Link>
                             </li>
                             <li>
+                                <Link to="/about" className="text-white/60 hover:text-white transition-colors">
+                                    About Us
+                                </Link>
+                            </li>
+                            <li>
                                 <Link to="/cart" className="text-white/60 hover:text-white transition-colors">
                                     My Cart
                                 </Link>
@@ -72,7 +77,7 @@ const Footer = () => {
                         <ul className="space-y-6 text-xs font-bold uppercase tracking-wider text-white/60">
                             <li className="flex items-start gap-4">
                                 <MapPin className="w-4 h-4 opacity-40 shrink-0" />
-                                <span className="tracking-widest">Taj Mahal Dargai, Malakand</span>
+                                <span className="tracking-widest">Taj Mall Dargai, Malakand</span>
                                  <p>/</p>
                                  <span className="tracking-widest">AL AIN SANIYA DUBAI</span>
                             </li>
@@ -84,7 +89,7 @@ const Footer = () => {
                             </li>
                             <li className="flex items-center gap-4">
                                 <Mail className="w-4 h-4 opacity-40 shrink-0" />
-                                <span className="tracking-widest">support@sheriyarperfume.com</span>
+                                <span className="tracking-widest">support@sheryarperfume.com</span>
                             </li>
                         </ul>
                     </div>

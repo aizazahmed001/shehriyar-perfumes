@@ -1,0 +1,27 @@
+.about-hero-pattern {
+    background-image:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.05), transparent 45%),
+        repeating-linear-gradient(90deg, transparent 0, transparent 48px, rgba(255, 255, 255, 0.04) 49px, transparent 50px);
+}
+
+.about-map-wrap {
+    min-height: 420px;
+}
+
+.about-map {
+    min-height: 420px;
+    height: 100%;
+    width: 100%;
+    filter: grayscale(1) contrast(1.05);
+}
+
+.about-map .leaflet-control-attribution {
+    font-size: 9px;
+}
+
+@media (max-width: 639px) {
+    .about-map-wrap,
+    .about-map {
+        min-height: 340px;
+    }
+}

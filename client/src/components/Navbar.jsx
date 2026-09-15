@@ -79,7 +79,7 @@ const Navbar = () => {
 
                     {/* Desktop Search */}
                     <div className="hidden md:flex items-center relative">
-                        <div className="flex items-center space-x-3 bg-gray-50 px-4 py-2.5 border border-transparent focus-within:border-black transition-all w-64 lg:w-96">
+                        <div className="flex items-center space-x-3 bg-white px-4 py-2.5 border border-black/15 focus-within:border-black transition-all w-64 lg:w-96 shadow-sm">
                             <Search className="text-gray-400 w-4 h-4" />
                             <input
                                 type="text"
@@ -131,6 +131,7 @@ const Navbar = () => {
                         <div className="hidden lg:flex items-center space-x-8 uppercase tracking-[0.2em] text-[10px] font-bold">
                             <Link to="/" className="text-black/60 hover:text-black transition-colors">Home</Link>
                             <Link to="/shop" className="text-black/60 hover:text-black transition-colors">Shop</Link>
+                            <Link to="/about" className="text-black/60 hover:text-black transition-colors">About</Link>
                             <Link to="/orders" className="text-black/60 hover:text-black transition-colors">Orders</Link>
                         </div>
 
@@ -269,6 +270,9 @@ const Navbar = () => {
                             </Link>
                             <Link to="/shop" onClick={() => setShowMobileMenu(false)} className="text-black/60 hover:text-black hover:translate-x-2 transition-all p-2 flex items-center justify-between group">
                                 Shop <span className="opacity-0 group-hover:opacity-100">→</span>
+                            </Link>
+                            <Link to="/about" onClick={() => setShowMobileMenu(false)} className="text-black/60 hover:text-black hover:translate-x-2 transition-all p-2 flex items-center justify-between group">
+                                About <span className="opacity-0 group-hover:opacity-100">→</span>
                             </Link>
                             <Link to="/orders" onClick={() => setShowMobileMenu(false)} className="text-black/60 hover:text-black hover:translate-x-2 transition-all p-2 flex items-center justify-between group">
                                 Orders <span className="opacity-0 group-hover:opacity-100">→</span>

@@ -3,8 +3,8 @@ import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 import {
-    Plus, Sparkles, TrendingUp, Star, ShoppingBag, Zap, Award, Truck,
-    ArrowRight, Heart, Smartphone, Watch, Headphones, Monitor, CheckCircle
+    Plus, Star, ShoppingBag, Truck, ArrowRight, Crown, Flame, Flower2, Gift,
+    Clock3, BadgeCheck, PackageCheck
 } from 'lucide-react';
 import socket from '../lib/socket';
 import ProductSkeleton from '../components/ProductSkeleton';
@@ -62,10 +62,10 @@ const Home = () => {
     };
 
     const categories = [
-        { name: 'Luxury Perfumes', icon: Sparkles },
-        { name: "Men's Perfumes", icon: Zap },
-        { name: "Women's Perfumes", icon: Heart },
-        { name: 'Gift Sets', icon: ShoppingBag },
+        { name: 'Luxury Perfumes', icon: Crown },
+        { name: "Men's Perfumes", icon: Flame },
+        { name: "Women's Perfumes", icon: Flower2 },
+        { name: 'Gift Sets', icon: Gift },
     ];
 
     return (
@@ -124,12 +124,12 @@ const Home = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
                         {[
                             { icon: Truck, title: "COMPLIMENTARY DELIVERY", desc: "On all premium orders" },
-                            { icon: Zap, title: "PRIORITY SHIPPING", desc: "Arrives in 48 hours" },
-                            { icon: Award, title: "AUTHENTICITY", desc: "100% Original Selection" },
-                            { icon: ShoppingBag, title: "LUXURY WRAPPING", desc: "Elegant gift options" },
+                            { icon: Clock3, title: "PRIORITY SHIPPING", desc: "Arrives in 48 hours" },
+                            { icon: BadgeCheck, title: "AUTHENTICITY", desc: "100% Original Selection" },
+                            { icon: PackageCheck, title: "LUXURY WRAPPING", desc: "Elegant gift options" },
                         ].map((item, idx) => (
                             <div key={idx} className="flex flex-col items-center text-center space-y-4">
-                                <item.icon className="w-5 h-5 opacity-40" />
+                                <item.icon className="w-7 h-7 opacity-55" strokeWidth={1.5} />
                                 <div className="space-y-1">
                                     <h3 className="text-[10px] font-black tracking-widest">{item.title}</h3>
                                     <p className="text-[9px] text-white/40 font-bold tracking-wider">{item.desc}</p>
@@ -155,7 +155,7 @@ const Home = () => {
                         {categories.map((cat, idx) => (
                             <Link key={idx} to={`/shop?category=${cat.name}`} className="group relative bg-white p-8 md:p-12 hover:bg-black transition-colors duration-700 text-center">
                                 <div className="space-y-4 md:space-y-6">
-                                    <cat.icon className="w-5 h-5 md:w-6 md:h-6 mx-auto group-hover:text-white transition-colors duration-700 opacity-40 group-hover:opacity-100" />
+                                    <cat.icon className="w-7 h-7 md:w-8 md:h-8 mx-auto group-hover:text-white transition-colors duration-700 opacity-45 group-hover:opacity-100" strokeWidth={1.5} />
                                     <h3 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.3em] font-serif group-hover:text-white transition-colors duration-700">{cat.name}</h3>
                                 </div>
                                 <div className="mt-6 md:mt-8 md:opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-2 group-hover:translate-y-0">
