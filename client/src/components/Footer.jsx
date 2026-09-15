@@ -1,5 +1,5 @@
 import React from 'react';
-import { Instagram, Mail, Phone, MapPin, Linkedin } from 'lucide-react';
+import { Instagram, Mail, Phone, MapPin} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -10,7 +10,7 @@ const Footer = () => {
                     {/* Brand Section */}
                     <div className="space-y-8">
                         <Link to="/" className="text-xl sm:text-2xl font-serif font-black tracking-tighter flex items-center">
-                            SHERIYAR<span className="font-light ml-1">PERFUME</span>
+                            SHERYAR<span className="font-light ml-1">PERFUME</span>
                         </Link>
                         <p className="text-gray-500 leading-relaxed text-xs uppercase tracking-widest font-bold">
                             Elevating the essence of identity through artisanal fragrances. Experience the peak of olfactory luxury.
