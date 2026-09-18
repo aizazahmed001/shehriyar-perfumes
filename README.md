@@ -149,11 +149,17 @@ npm run dev
 ---
 
 ## 🔐 Admin Credentials
+## 🔐 Admin Access
 
-Access the **Admin Control Panel** using the following credentials:
+Create or promote an administrator using private environment variables. Add these to `server/.env`, then run `npm run create-admin` from the `server` directory:
 
-> **Email:** `admin@gmail.com`
-> **Password:** `admin123`
+```env
+ADMIN_NAME=Store Admin
+ADMIN_EMAIL=your-admin@example.com
+ADMIN_PASSWORD=use-a-password-with-at-least-8-characters
+```
+
+The command updates the password and admin role if the email already exists, or creates the admin if it does not.
 
 ---
 
