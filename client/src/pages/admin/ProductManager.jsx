@@ -271,18 +271,18 @@ const AdminProducts = () => {
 
             {/* Modal */}
             {showModal && (
-                <div className="fixed inset-0 bg-black/95 overflow-y-auto h-full w-full z-50 flex items-start sm:items-center justify-center p-4">
-                    <div className="bg-white w-full max-w-2xl p-10 relative my-8 animate-fadeIn">
-                        <button onClick={() => setShowModal(false)} className="absolute top-8 right-8 text-black/20 hover:text-black transition-colors">
+                <div className="fixed inset-0 bg-black/95 overflow-y-auto z-50 flex items-start sm:items-center justify-center p-3 sm:p-5">
+                    <div className="bg-white w-full max-w-4xl max-h-[calc(100vh-1.5rem)] sm:max-h-[calc(100vh-2.5rem)] overflow-y-auto p-5 sm:p-8 lg:p-10 relative my-0 sm:my-4 animate-fadeIn">
+                        <button onClick={() => setShowModal(false)} aria-label="Close product form" className="absolute top-5 right-5 sm:top-8 sm:right-8 text-black/20 hover:text-black transition-colors">
                             <X className="w-6 h-6" />
                         </button>
                         
-                        <div className="mb-12 space-y-2">
+                        <div className="mb-8 sm:mb-12 space-y-2 pr-10">
                             <p className="text-[8px] uppercase tracking-[0.4em] font-black text-black/40">Configuration</p>
                             <h2 className="text-3xl font-serif italic">{editingId ? 'Edit Fragment' : 'Archive New Fragment'}</h2>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-10">
+                        <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-10 min-w-0">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                                 <div className="space-y-1">
                                     <label className="text-[10px] uppercase tracking-widest font-black text-black/40 ml-1">Fragment Name</label>
@@ -300,13 +300,13 @@ const AdminProducts = () => {
                                     <button type="button" onClick={() => setFormData({ ...formData, variants: [...formData.variants, { size: '50ml', price: '', stock: 0, sku: '' }] })} className="text-[9px] font-black uppercase tracking-widest underline">Add size</button>
                                 </div>
                                 {formData.variants.map((variant, index) => (
-                                    <div key={`${variant.size}-${index}`} className="grid grid-cols-2 sm:grid-cols-4 gap-3 border border-black/5 p-4">
-                                        <select value={variant.size} onChange={(event) => setFormData({ ...formData, variants: formData.variants.map((item, itemIndex) => itemIndex === index ? { ...item, size: event.target.value } : item) })} className="border border-black/10 px-3 py-2 text-xs outline-none">
+                                    <div key={`${variant.size}-${index}`} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 border border-black/5 p-3 sm:p-4 min-w-0">
+                                        <select value={variant.size} onChange={(event) => setFormData({ ...formData, variants: formData.variants.map((item, itemIndex) => itemIndex === index ? { ...item, size: event.target.value } : item) })} className="w-full min-w-0 border border-black/10 px-3 py-2 text-xs outline-none">
                                             {['30ml', '50ml', '75ml', '100ml'].map((size) => <option key={size}>{size}</option>)}
                                         </select>
-                                        <input required type="number" min="0" placeholder="Price" value={variant.price} onChange={(event) => setFormData({ ...formData, variants: formData.variants.map((item, itemIndex) => itemIndex === index ? { ...item, price: event.target.value } : item) })} className="border-b border-black/10 px-3 py-2 text-xs outline-none" />
-                                        <input required type="number" min="0" placeholder="Stock" value={variant.stock} onChange={(event) => setFormData({ ...formData, variants: formData.variants.map((item, itemIndex) => itemIndex === index ? { ...item, stock: event.target.value } : item) })} className="border-b border-black/10 px-3 py-2 text-xs outline-none" />
-                                        <input type="text" placeholder="SKU" value={variant.sku || ''} onChange={(event) => setFormData({ ...formData, variants: formData.variants.map((item, itemIndex) => itemIndex === index ? { ...item, sku: event.target.value } : item) })} className="border-b border-black/10 px-3 py-2 text-xs outline-none" />
+                                        <input required type="number" min="0" placeholder="Price" value={variant.price} onChange={(event) => setFormData({ ...formData, variants: formData.variants.map((item, itemIndex) => itemIndex === index ? { ...item, price: event.target.value } : item) })} className="w-full min-w-0 border-b border-black/10 px-3 py-2 text-xs outline-none" />
+                                        <input required type="number" min="0" placeholder="Stock" value={variant.stock} onChange={(event) => setFormData({ ...formData, variants: formData.variants.map((item, itemIndex) => itemIndex === index ? { ...item, stock: event.target.value } : item) })} className="w-full min-w-0 border-b border-black/10 px-3 py-2 text-xs outline-none" />
+                                        <input type="text" placeholder="SKU" value={variant.sku || ''} onChange={(event) => setFormData({ ...formData, variants: formData.variants.map((item, itemIndex) => itemIndex === index ? { ...item, sku: event.target.value } : item) })} className="w-full min-w-0 border-b border-black/10 px-3 py-2 text-xs outline-none" />
                                     </div>
                                 ))}
                             </div>
