@@ -118,19 +118,22 @@ const Shop = () => {
                 </div>
 
                 {!loading && (
-                    <div className="mb-12 text-[10px] uppercase tracking-[0.2em] font-black text-black/20">
+                    <div className="mb-8 md:mb-12 text-[10px] uppercase tracking-[0.2em] font-black text-black/20">
                         Archive / <span className="text-black">{filteredProducts.length} items</span>
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 md:gap-8 lg:gap-12">
                     {loading ? (
                         <ProductSkeleton count={8} />
                     ) : (
                         filteredProducts.map((product) => {
                             const inWishlist = isInWishlist(product._id);
                             return (
-                                <div key={product._id} className="group relative flex flex-col space-y-6 animate-fadeIn">
+                                <div
+                                    key={product._id}
+                                    className="group relative flex flex-col space-y-2.5 sm:space-y-4 md:space-y-6 animate-fadeIn bg-white p-2 sm:p-3 md:p-0 border md:border-0 border-black/5"
+                                >
                                     <Link to={`/product/${product._id}`} className="block relative aspect-[4/5] bg-white overflow-hidden border border-black/5 group-hover:border-black transition-colors duration-500">
                                         <img
                                             src={getProductImage(product)}
@@ -141,7 +144,7 @@ const Shop = () => {
                                             alt={product.name}
                                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 opacity-90 group-hover:opacity-100"
                                         />
-                                        <div className="absolute top-4 left-4 bg-black text-white px-3 py-1 text-[8px] font-black uppercase tracking-widest">
+                                        <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-black text-white px-1.5 py-0.5 sm:px-3 sm:py-1 text-[6.5px] sm:text-[8px] font-black uppercase tracking-widest">
                                             {product.category}
                                         </div>
                                         <button
@@ -149,37 +152,37 @@ const Shop = () => {
                                                 e.preventDefault();
                                                 inWishlist ? removeFromWishlist(product._id) : addToWishlist(product);
                                             }}
-                                            className={`absolute top-4 right-4 p-2 transition-all duration-300 bg-white/50 backdrop-blur-md opacity-0 group-hover:opacity-100 ${inWishlist ? 'text-red-600' : 'text-black hover:scale-125'}`}
+                                            className={`absolute top-2 right-2 sm:top-4 sm:right-4 p-1.5 sm:p-2 transition-all duration-300 bg-white/70 backdrop-blur-md ${inWishlist ? 'text-red-600 opacity-100' : 'text-black opacity-0 group-hover:opacity-100 hover:scale-125'}`}
                                         >
-                                            <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
+                                            <Heart className={`w-3.5 h-3.5 md:w-4 md:h-4 ${inWishlist ? 'fill-current' : ''}`} />
                                         </button>
                                     </Link>
 
-                                    <div className="space-y-4">
-                                        <div className="space-y-1">
+                                    <div className="space-y-1.5 sm:space-y-4">
+                                        <div className="space-y-0.5 sm:space-y-1">
                                             <Link to={`/product/${product._id}`}>
-                                                <h3 className="font-serif text-xl group-hover:italic transition-all duration-300">{product.name}</h3>
+                                                <h3 className="font-serif text-xs sm:text-base md:text-xl group-hover:italic transition-all duration-300 truncate">{product.name}</h3>
                                             </Link>
-                                            <div className="flex items-center gap-2 opacity-40">
-                                                <Star className="w-3 h-3 fill-black" />
-                                                <span className="text-[10px] font-bold tracking-widest uppercase">4.8 / 5.0</span>
+                                            <div className="flex items-center gap-1.5 sm:gap-2 opacity-40">
+                                                <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-black text-black" />
+                                                <span className="text-[8px] sm:text-[10px] font-bold tracking-widest uppercase">4.8 / 5.0</span>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center justify-between border-t border-black/5 pt-4">
+                                        <div className="flex items-center justify-between border-t border-black/5 pt-2 sm:pt-4">
                                             <div className="flex flex-col">
                                                 {product.regularPrice && product.sellPrice && product.regularPrice > product.sellPrice ? (
                                                     <>
-                                                        <span className="text-[10px] text-black/20 line-through">{formatPrice(product.regularPrice)}</span>
-                                                        <span className="text-lg font-bold tracking-tight">{formatPrice(product.sellPrice)}</span>
+                                                        <span className="text-[8px] sm:text-[10px] text-black/20 line-through">{formatPrice(product.regularPrice)}</span>
+                                                        <span className="text-xs sm:text-base md:text-lg font-bold tracking-tight">{formatPrice(product.sellPrice)}</span>
                                                     </>
                                                 ) : (
-                                                    <span className="text-lg font-bold tracking-tight">{formatPrice(product.sellPrice || product.price)}</span>
+                                                    <span className="text-xs sm:text-base md:text-lg font-bold tracking-tight">{formatPrice(product.sellPrice || product.price)}</span>
                                                 )}
                                             </div>
                                             <button
                                                 onClick={() => addToCart(product)}
-                                                className="text-[10px] font-black uppercase tracking-widest hover:underline"
+                                                className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest hover:underline whitespace-nowrap ml-1 sm:ml-2"
                                             >
                                                 Add to Cart
                                             </button>

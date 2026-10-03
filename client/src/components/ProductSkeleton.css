@@ -2,9 +2,8 @@
 .product-skeleton {
     position: relative;
     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border-radius: 24px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     animation: skeletonFadeIn 0.6s ease-out forwards;
     opacity: 0;
     transform: translateY(20px);
@@ -149,18 +148,23 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .skeleton-content {
-        padding: 1rem;
+        padding: 0.75rem;
+        gap: 0.5rem;
     }
 
     .skeleton-title {
-        height: 20px;
+        height: 16px;
     }
 
     .skeleton-price {
-        height: 24px;
+        height: 18px;
+    }
+
+    .skeleton-rating {
+        height: 14px;
     }
 
     .skeleton-button {
-        height: 44px;
+        height: 32px;
     }
 }

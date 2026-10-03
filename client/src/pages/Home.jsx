@@ -160,19 +160,22 @@ const Home = () => {
             </section>
 
             {/* Featured Products */}
-            <section id="products" className="py-20 md:py-32 bg-gray-50/50">
-                <div className="container mx-auto px-6">
-                    <div className="flex flex-col items-center text-center mb-16 md:mb-24 space-y-4">
+            <section id="products" className="py-16 md:py-32 bg-gray-50/50">
+                <div className="container mx-auto px-4 sm:px-6">
+                    <div className="flex flex-col items-center text-center mb-10 md:mb-24 space-y-3 sm:space-y-4">
                         <p className="text-[10px] uppercase tracking-[0.4em] font-black text-black/40">The Gallery</p>
                         <h2 className="text-3xl md:text-5xl font-serif">Featured <span className="italic">Fragrances</span></h2>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8 lg:gap-12">
                         {loading ? (
                             <ProductSkeleton count={4} />
                         ) : (
                             products.slice(0, 8).map((product) => (
-                                <div key={product._id} className="home-product-card group relative flex flex-col space-y-5 md:space-y-6">
+                                <div
+                                    key={product._id}
+                                    className="home-product-card group relative flex flex-col space-y-2.5 sm:space-y-4 md:space-y-6 animate-fadeIn bg-white p-2 sm:p-3 md:p-0 border md:border-0 border-black/5"
+                                >
                                     <Link to={`/product/${product._id}`} className="block relative aspect-[4/5] bg-white overflow-hidden border border-black/5 group-hover:border-black transition-colors duration-500">
                                         <img
                                             src={getProductImage(product)}
@@ -183,27 +186,27 @@ const Home = () => {
                                             alt={product.name}
                                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 opacity-90 group-hover:opacity-100"
                                         />
-                                        <div className="absolute top-4 left-4 bg-black text-white px-2 py-1 text-[7px] font-black uppercase tracking-widest">
+                                        <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-black text-white px-1.5 py-0.5 sm:px-2 sm:py-1 text-[6.5px] sm:text-[7px] font-black uppercase tracking-widest">
                                             {product.category}
                                         </div>
                                     </Link>
 
-                                    <div className="space-y-3 md:space-y-4">
-                                        <div className="space-y-1">
+                                    <div className="space-y-1.5 sm:space-y-4">
+                                        <div className="space-y-0.5 sm:space-y-1">
                                             <Link to={`/product/${product._id}`}>
-                                                <h3 className="font-serif text-lg md:text-xl group-hover:italic transition-all duration-300">{product.name}</h3>
+                                                <h3 className="font-serif text-xs sm:text-base md:text-xl group-hover:italic transition-all duration-300 truncate">{product.name}</h3>
                                             </Link>
-                                            <div className="flex items-center gap-2 opacity-40">
-                                                <Star className="w-3 h-3 fill-black text-black" />
-                                                <span className="text-[10px] font-bold tracking-widest uppercase">4.8 / 5.0</span>
+                                            <div className="flex items-center gap-1.5 sm:gap-2 opacity-40">
+                                                <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-black text-black" />
+                                                <span className="text-[8px] sm:text-[10px] font-bold tracking-widest uppercase">4.8 / 5.0</span>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center justify-between border-t border-black/5 pt-3 md:pt-4">
-                                            <p className="text-base md:text-lg font-bold tracking-tight">{formatPrice(product.sellPrice || product.price)}</p>
+                                        <div className="flex items-center justify-between border-t border-black/5 pt-2 sm:pt-4">
+                                            <p className="text-xs sm:text-base md:text-lg font-bold tracking-tight">{formatPrice(product.sellPrice || product.price)}</p>
                                             <button
                                                 onClick={() => addToCart(product)}
-                                                className="text-[10px] font-black uppercase tracking-widest hover:underline"
+                                                className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest hover:underline whitespace-nowrap ml-1 sm:ml-0"
                                             >
                                                 Add to Cart
                                             </button>
@@ -214,7 +217,7 @@ const Home = () => {
                         )}
                     </div>
 
-                    <div className="mt-24 text-center">
+                    <div className="mt-16 md:mt-24 text-center">
                         <Link to="/shop" className="monochrome-btn-outline inline-flex items-center gap-4">
                             View All Masterpieces <ArrowRight className="w-4 h-4" />
                         </Link>
